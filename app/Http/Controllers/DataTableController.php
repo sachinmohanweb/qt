@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Models\User;
 use App\Models\Testimonial;
 use App\Models\Blog;
 use App\Models\ServiceType;
 use App\Models\Service;
 use App\Models\ServiceGallery;
-use App\Models\Product;
-use App\Models\Feedback;
 use Yajra\DataTables\Facades\DataTables;
+
 
 class DataTableController extends Controller
 {

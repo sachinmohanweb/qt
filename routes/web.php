@@ -12,6 +12,7 @@ use App\Http\Controllers\ServiceTypeController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ServiceGalleryController;
 use App\Http\Controllers\DataTableController;
+use App\Http\Controllers\WebsiteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +24,23 @@ use App\Http\Controllers\DataTableController;
 Route::get('/admin', [AuthController::class, 'showLoginForm'])->name('login.form');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/change-password', [AuthController::class, 'showChangePasswordForm'])->name('password.form')->middleware('auth');
-Route::post('/change-password', [AuthController::class, 'changePassword'])->name('password.change')->middleware('auth');
+Route::get('/change-password', [AuthController::class, 'showChangePasswordForm'])->name('password.form')
+                ->middleware('auth');
+Route::post('/change-password', [AuthController::class, 'changePassword'])->name('password.change')
+                ->middleware('auth');
+
+Route::get('/', [WebsiteController::class, 'Index'])->name('web.index');
+Route::get('/design', [WebsiteController::class, 'Design'])->name('web.design');
+Route::get('/construction', [WebsiteController::class, 'Construction'])->name('web.construction');
+Route::get('/interior', [WebsiteController::class, 'Interior'])->name('web.interior');
+Route::get('/maintenance', [WebsiteController::class, 'Maintenance'])->name('web.maintenance');
+Route::get('/about', [WebsiteController::class, 'About'])->name('web.about');
+Route::get('/projects', [WebsiteController::class, 'Project'])->name('web.project');
+Route::get('/project_details', [WebsiteController::class, 'ProjectDetails'])->name('web.project.details');
+Route::get('/blogs', [WebsiteController::class, 'Blog'])->name('web.blog');
+Route::get('/blog_details', [WebsiteController::class, 'BlogDetails'])->name('web.blog.details');
+Route::get('/contact', [WebsiteController::class, 'Contact'])->name('web.contact');
+
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
