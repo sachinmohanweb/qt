@@ -15,8 +15,18 @@ class WebsiteController extends Controller
 {
 
     public function Index(Request $request)
-    {
-        return view('website.index');
+    {      
+        $service_types = ServiceType::where('status',1)->orderBy('name')
+                                ->get();
+        $group_services = ServiceType::orderBy('name')->with('services')->get();
+
+        $blogs = Blog::where('status',1)->where('home_visibility',1)
+                        ->orderBy('created_at', 'desc')->limit(3)->get();
+
+        $testimonials = Testimonial::where('status',1)->where('home_visibility',1)
+                            ->orderBy('created_at', 'desc')->get();
+
+        return view('website.index',compact('service_types','group_services','blogs','testimonials'));
 
     }
     
@@ -68,10 +78,11 @@ class WebsiteController extends Controller
 
     }
 
-    public function BlogDetails(Request $request)
+    public function BlogDetails($slug)
     {
-        return view('website.blog_details');
+        $blog = Blog::where('slug',$slug)->first();
 
+        return view('website.blog_details',compact('blog'));
     }
 
     public function Contact(Request $request)

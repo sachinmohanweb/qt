@@ -72,82 +72,28 @@
       <div class="about-qot d-flex justify-content-between flex-wrap">
         <div class="col-lg-6 col-12">
           <div class="about-left">
+            @foreach($service_types as $key=>$value)
             <div class="col-sm-6 col-12">
               <div class="box" style="background-color: #333">
                 <div
                   class="image"
                   style="background-image: url('web_img/diamond.png')"
                 >
-                  <img src="web_img/icons/1.png" alt="" />
+                <img src="{{ $value->icon ? asset('storage/service_types/' . $value->icon) : asset('web_img/icons/1.png') }}" alt="Icon" />
+
                 </div>
 
-                <h2>Design</h2>
-                <p>Tomorrow’s Thinking</p>
+                <h2>{{$value->name}}</h2>
+                <p>{{$value->subtitle}}</p>
                 <div class="qot-btn">
-                  <a href="design">
+                  <a href="{{$value->slug}}">
                     <span>Learn More</span>
                     <img src="web_img/right-arrow.png" alt="" />
                   </a>
                 </div>
               </div>
             </div>
-            <div class="col-sm-6 col-12">
-              <div class="box" style="background-color: #444">
-                <div
-                  class="image"
-                  style="background-image: url('web_img/diamond.png')"
-                >
-                  <img src="web_img/icons/2.png" alt="" />
-                </div>
-
-                <h2>Construction</h2>
-                <p>Masterminds of Space</p>
-                <div class="qot-btn">
-                  <a href="construction">
-                    <span>Learn More</span>
-                    <img src="web_img/right-arrow.png" alt="" />
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-12">
-              <div class="box" style="background-color: #555">
-                <div
-                  class="image"
-                  style="background-image: url('web_img/diamond.png')"
-                >
-                  <img src="web_img/icons/3.png" alt="" />
-                </div>
-
-                <h2>Interior</h2>
-                <p>Crafted Spaces</p>
-                <div class="qot-btn">
-                  <a href="interior">
-                    <span>Learn More</span>
-                    <img src="web_img/right-arrow.png" alt="" />
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-12">
-              <div class="box" style="background-color: #666">
-                <div
-                  class="image"
-                  style="background-image: url('web_img/diamond.png')"
-                >
-                  <img src="web_img/icons/4.png" alt="" />
-                </div>
-
-                <h2>Maintenance</h2>
-                <p>Complete Solutions</p>
-                <div class="qot-btn">
-                  <a href="maintenance">
-                    <span>Learn More</span>
-                    <img src="web_img/right-arrow.png" alt="" />
-                  </a>
-                </div>
-              </div>
-            </div>
+            @endforeach
           </div>
         </div>
         <div class="col-lg-6 col-12">
@@ -356,64 +302,21 @@
           <h2>Real Stories. Real Results.</h2>
         </div>
         <div class="owl-carousel owl-theme slider3">
-          <div class="carousel">
-            <div class="review">
-              <div class="img">
-                <img src="web_img/testimonial/siby.jpeg" alt="Hashim" />
-              </div>
-              <h4>Sibey Varghese</h4>
-
-              <p>
-                From construction to interiors, QOT seamlessly handled
-                everything, ensuring quality, precision, and satisfaction
-                throughout the project.
-              </p>
-            </div>
-          </div>
+          @foreach($testimonials as $key=>$value)
 
           <div class="carousel">
             <div class="review">
               <div class="img">
-                <img src="web_img/testimonial/vishnu.jpeg" alt="CILA" />
+                <img src="{{ $value->image ? asset('storage/testimonials/' . $value->image) : asset('web_img/icons/1.png') }}" alt="Icon" />
               </div>
-              <h4>Vishnu Binu</h4>
+              <h4>{{$value->name}}</h4>
 
               <p>
-                Their attention to detail and innovative designs turned our
-                dream home into a stunning reality. Highly recommended!
+               {{$value->description}}
               </p>
             </div>
           </div>
-
-          <div class="carousel">
-            <div class="review">
-              <div class="img">
-                <img src="web_img/testimonial/manoj.jpeg" alt="Amit Singh" />
-              </div>
-              <h4>Manoj R</h4>
-
-              <p>
-                Exceptional craftsmanship and timely execution! QOT delivered a
-                commercial space that perfectly aligned with our business
-                vision.
-              </p>
-            </div>
-          </div>
-          <div class="carousel">
-            <div class="review">
-              <div class="img">
-                <img src="web_img/testimonial/jins.jpeg" alt="Amit Singh" />
-              </div>
-              <h4>Jins John</h4>
-
-              <p>
-                QOT transformed our office into a modern, functional space,
-                exceeding our expectations with their creativity and
-                professionalism.
-              </p>
-            </div>
-          </div>
-        </div>
+          @endforeach
       </div>
     </section>
     <!-- / testimoial -->
@@ -426,20 +329,22 @@
           <h2>Blank walls. Brave ideas. Blog it.</h2>
           <div class="row">
             <div class="blog-sec d-flex flex-wrap">
+            @foreach($blogs as $key=>$value)
               <div class="col-lg-4 col-12">
-                <div class="block" style="background: url(web_img/banner1.jpg)">
+               <div class="block" style="background: url('{{ asset($value->image ? 'storage/blogs/' . $value->image : 'web_img/banner1.jpg') }}'); background-size: cover; background-position: center;">
+
+
                   <div class="content">
-                    <span>21/02/2024</span>
+                    <span>{{ \Carbon\Carbon::parse($value->date)->format('F j, Y') }}</span>
                     <h3>
-                      How to Choose a Reliable money transfer Service: Key
-                      Factors to Consider
+                     {{$value->heading}}
                     </h3>
                     <div
                       class="blog-view d-flex justify-content-between align-items-center"
                     >
-                      <div class="by-admin">By Admin</div>
+                      <div class="by-admin"> {{$value->user_name}}</div>
                       <div class="qot-btn">
-                        <a href="#">
+                        <a href="blog_details/{{$value->slug}}">
                           <span>Learn More</span>
                           <img src="web_img/right-arrow.png" alt="" />
                         </a>
@@ -448,50 +353,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-4 col-12">
-                <div class="block" style="background: url(web_img/banner2.jpg)">
-                  <div class="content">
-                    <span>21/02/2024</span>
-                    <h3>
-                      The Benefits of Using Digital Platforms for International
-                      Money Transfers
-                    </h3>
-                    <div
-                      class="blog-view d-flex justify-content-between align-items-center"
-                    >
-                      <div class="by-admin">By Admin</div>
-                      <div class="qot-btn">
-                        <a href="#">
-                          <span>Learn More</span>
-                          <img src="web_img/right-arrow.png" alt="" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4 col-12">
-                <div class="block" style="background: url(web_img/banner3.jpg)">
-                  <div class="content">
-                    <span>21/02/2024</span>
-                    <h3>
-                      Understanding Exchange Rates: How to Get the Best Value
-                      for Your Money
-                    </h3>
-                    <div
-                      class="blog-view d-flex justify-content-between align-items-center"
-                    >
-                      <div class="by-admin">By Admin</div>
-                      <div class="qot-btn">
-                        <a href="#">
-                          <span>Learn More</span>
-                          <img src="web_img/right-arrow.png" alt="" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            @endforeach
             </div>
           </div>
         </div>
