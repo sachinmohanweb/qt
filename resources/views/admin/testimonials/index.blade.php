@@ -21,7 +21,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">All Testimonials</h4>
                 <div class="d-flex gap-2">
-                    <select id="star-rating-filter" class="form-select" style="width: 150px;">
+                    <select id="star-rating-filter" class="form-select form_select" style="width: 150px;">
                         <option value="">All Ratings</option>
                         <option value="1">1 Star</option>
                         <option value="2">2 Stars</option>

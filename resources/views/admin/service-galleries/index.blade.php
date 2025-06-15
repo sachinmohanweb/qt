@@ -21,7 +21,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">All Gallery Images</h4>
                 <div class="d-flex gap-2">
-                    <select id="type-filter" class="form-select" style="width: 200px;">
+                    <select id="type-filter" class="form-select form_select" style="width: 200px;">
                         <option value="">All Service Types</option>
                         @foreach(\App\Models\ServiceType::where('status', 1)->get() as $type)
                             <option value="{{ $type->id }}">{{ $type->name }}</option>

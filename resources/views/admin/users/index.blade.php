@@ -27,7 +27,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h4 class="mb-0">All Users</h4>
                 <div class="d-flex gap-2">
-                    <select id="role-filter" class="form-select" style="width: 150px;">
+                    <select id="role-filter" class="form-select form_select" style="width: 150px;">
                         <option value="">All Roles</option>
                         <option value="admin">Admin</option>
                         <option value="editor">Editor</option>

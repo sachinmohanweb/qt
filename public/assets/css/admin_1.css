@@ -19,6 +19,13 @@
     --sidebar-text: #E2E8F0;
     --sidebar-active: #4299E1;
     
+    /* Table specific colors */
+    --table-header-bg: #4A5568;
+    --table-header-text: #FFFFFF;
+    --table-row-hover: rgba(10, 132, 255, 0.05);
+    --datatable-controls-bg: #2D3748;
+    --datatable-filter-bg: #DC2626;
+    
     /* Spacing */
     --spacing-xs: 4px;
     --spacing-sm: 8px;
@@ -79,7 +86,7 @@ a {
 }
 
 a:hover {
-    color: #fff;
+    color: var(--primary-dark);
 }
 
 /* Layout */
@@ -129,22 +136,11 @@ a:hover {
     color: #FFFFFF;
     display: flex;
     align-items: center;
-    justify-content: center;
-
 }
 
 .sidebar-logo i {
     margin-right: var(--spacing-sm);
     color: var(--primary-light);
-}
-
-.sidebar-logo img {
-    width: 100px;
-}
-@media screen and (max-width: 765px) {
-    .sidebar-logo img {
-        width: 50px;
-    }
 }
 
 .sidebar-menu {
@@ -318,7 +314,7 @@ a:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #c31c34;
+    background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
 }
 
 .card-body {
@@ -328,7 +324,7 @@ a:hover {
 .card-footer {
     padding: var(--spacing-md) var(--spacing-lg);
     border-top: 1px solid var(--border);
-    background-color: var(--card-bg);
+    background-color: var(--background);
 }
 
 /* Stat cards */
@@ -537,7 +533,7 @@ a:hover {
 }
 
 .btn-primary {
-    background: #c31c34;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     color: white;
     box-shadow: var(--shadow-sm);
 }
@@ -628,34 +624,246 @@ a:hover {
     gap: var(--spacing-xs);
 }
 
-/* Tables */
+/* Enhanced Table Styles */
+.table-responsive {
+    overflow-x: auto;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    background-color: var(--card-bg);
+    width: 100%;
+}
+
 .table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: var(--spacing-lg);
+    margin-bottom: 0;
+    background-color: var(--card-bg);
 }
 
-.table th,
+.table th {
+    background: linear-gradient(135deg, var(--table-header-bg) 0%, #2D3748 100%);
+    color: var(--table-header-text);
+    font-weight: 600;
+    padding: var(--spacing-lg) var(--spacing-md);
+    text-align: left;
+    border: none;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
 .table td {
     padding: var(--spacing-md);
     text-align: left;
     border-bottom: 1px solid var(--border);
-}
-
-.table th {
-    font-weight: 600;
-/*    background: linear-gradient(135deg, #F8FAFC 0%, #EDF2F7 100%);*/
-    background: #1a202c;
+    vertical-align: middle;
     color: var(--text);
 }
 
-.table tr:hover {
-    background-color: rgba(10, 132, 255, 0.02);
+.table tbody tr {
+    transition: background-color 0.2s ease;
 }
 
-.table-responsive {
-    overflow-x: auto;
+.table tbody tr:hover {
+    background-color: var(--table-row-hover);
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* DataTables Enhanced Styling */
+.dataTables_wrapper {
+    width: 100%;
+    margin-bottom: var(--spacing-lg);
+}
+
+/* DataTables Filter Section */
+.datatable-filters {
+    background: linear-gradient(135deg, var(--datatable-filter-bg) 0%, #B91C1C 100%);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.datatable-filters h4 {
+    color: white;
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.datatable-filters .form-select {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    backdrop-filter: blur(10px);
+    min-width: 150px;
+}
+
+.datatable-filters .form-select:focus {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.datatable-filters .form-select option {
+    background-color: var(--datatable-filter-bg);
+    color: white;
+}
+
+/* DataTables Controls Section */
+.datatable-controls {
+    background: linear-gradient(135deg, var(--datatable-controls-bg) 0%, #1A202C 100%);
+    padding: var(--spacing-lg);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.datatable-controls .dataTables_length {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: white;
+    font-size: 0.875rem;
+}
+
+.datatable-controls .dataTables_length select {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-sm);
+    backdrop-filter: blur(10px);
+}
+
+.datatable-controls .dataTables_filter {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.datatable-controls .dataTables_filter label {
+    color: white;
+    font-size: 0.875rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.datatable-controls .dataTables_filter input {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-sm);
+    backdrop-filter: blur(10px);
+    min-width: 250px;
+}
+
+.datatable-controls .dataTables_filter input:focus {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+    outline: none;
+}
+
+.datatable-controls .dataTables_filter input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* DataTables Info and Pagination */
+.dataTables_info {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    padding: var(--spacing-md) 0;
+}
+
+.dataTables_paginate {
+    padding: var(--spacing-md) 0;
+}
+
+.dataTables_paginate .paginate_button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 var(--spacing-md);
+    margin: 0 2px;
     border-radius: var(--radius-md);
+    background-color: var(--card-bg);
+    color: var(--text);
+    border: 2px solid var(--border);
+    transition: all 0.2s ease;
+    text-decoration: none;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+.dataTables_paginate .paginate_button:hover {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.dataTables_paginate .paginate_button.current {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: white;
+    border-color: var(--primary);
+}
+
+.dataTables_paginate .paginate_button.disabled {
+    color: var(--secondary-light);
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.5;
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    background-color: #dc3545;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.toggle-switch.active {
+    background-color: #28a745;
+}
+
+.toggle-slider {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch.active .toggle-slider {
+    transform: translateX(26px);
 }
 
 /* Badges */
@@ -813,7 +1021,7 @@ a:hover {
 .login-header {
     padding: var(--spacing-xl);
     text-align: center;
-    background: #c31c34;
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
     color: white;
 }
 
@@ -833,6 +1041,11 @@ a:hover {
 
 .login-card .card-body {
     padding: var(--spacing-xl);
+}
+
+/* Star Rating */
+.star-rating {
+    color: #ffc107;
 }
 
 /* Utility classes */
@@ -859,10 +1072,36 @@ a:hover {
 .border-bottom { border-bottom: 1px solid var(--border); }
 .py-4 { padding-top: var(--spacing-lg); padding-bottom: var(--spacing-lg); }
 
-/* Media queries for responsive design */
+/* Mobile Responsive Design */
+@media (max-width: 1200px) {
+    .content-wrapper {
+        margin-left: 250px;
+        padding: var(--spacing-md);
+    }
+}
+
 @media (max-width: 992px) {
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .datatable-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .datatable-controls .dataTables_filter input {
+        min-width: 100%;
+    }
+    
+    .datatable-filters {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--spacing-sm);
+    }
+    
+    .datatable-filters .form-select {
+        min-width: 100%;
     }
 }
 
@@ -880,7 +1119,7 @@ a:hover {
     .menu-item span {
         display: none;
     }
-
+    
     .sidebar.expanded .sidebar-logo span,
     .sidebar.expanded .menu-item span {
         display: inline;
@@ -888,6 +1127,7 @@ a:hover {
     
     .content-wrapper {
         margin-left: 80px;
+        padding: var(--spacing-sm);
     }
     
     .sidebar.expanded + .content-wrapper {
@@ -921,11 +1161,55 @@ a:hover {
         align-items: flex-start;
         gap: var(--spacing-md);
     }
+    
+    /* Mobile DataTable Styling */
+    .table-responsive {
+        border-radius: var(--radius-sm);
+    }
+    
+    .table th,
+    .table td {
+        padding: var(--spacing-sm);
+        font-size: 0.875rem;
+    }
+    
+    .datatable-controls {
+        padding: var(--spacing-md);
+    }
+    
+    .datatable-filters {
+        padding: var(--spacing-md);
+    }
+    
+    .datatable-controls .dataTables_filter input {
+        min-width: 200px;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+    
+    .btn-group .btn {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 @media (max-width: 576px) {
     .content-wrapper {
-        padding: var(--spacing-md);
+        padding: var(--spacing-sm);
+        margin-left: 0;
+    }
+    
+    .sidebar {
+        transform: translateX(-100%);
+        z-index: 1001;
+    }
+    
+    .sidebar.expanded {
+        transform: translateX(0);
+        width: 100%;
     }
     
     .card-header,
@@ -936,11 +1220,55 @@ a:hover {
     
     .table th,
     .table td {
-        padding: var(--spacing-sm);
+        padding: var(--spacing-xs);
+        font-size: 0.8rem;
     }
     
     .btn-group {
         flex-direction: column;
+    }
+    
+    /* Mobile DataTable Adjustments */
+    .datatable-controls {
+        padding: var(--spacing-sm);
+        gap: var(--spacing-sm);
+    }
+    
+    .datatable-filters {
+        padding: var(--spacing-sm);
+        gap: var(--spacing-xs);
+    }
+    
+    .datatable-filters h4 {
+        font-size: 1rem;
+    }
+    
+    .datatable-controls .dataTables_filter input {
+        min-width: 150px;
+        font-size: 0.875rem;
+    }
+    
+    .datatable-controls .dataTables_length select {
+        font-size: 0.875rem;
+    }
+    
+    /* Responsive table for very small screens */
+    .table-responsive {
+        font-size: 0.75rem;
+    }
+    
+    .toggle-switch {
+        width: 40px;
+        height: 20px;
+    }
+    
+    .toggle-slider {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .toggle-switch.active .toggle-slider {
+        transform: translateX(20px);
     }
 }
 
@@ -977,7 +1305,7 @@ a:hover {
 }
 
 .sortable:hover {
-    background-color: rgba(10, 132, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .sortable::after {
@@ -1032,28 +1360,6 @@ a:hover {
     max-width: 100%;
     height: auto;
 }
-.form_select{
-    padding: 10px;
-    margin-left: 50px;
-}
-.dataTables_filter{
-    margin-left: 100px;
-}
-.center_card{
-    margin: 0px 20px;
-}
-#testimonials-table{
-    width: 1006px;
-}
-#service-types-table{
-    width: 1006px;
-}
-#services-table{
-    width: 1006px;
-}
-#service-galleries-table{
-    width: 1006px;
-}
 
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
@@ -1069,5 +1375,51 @@ a:hover {
     
     .login-page {
         background: linear-gradient(135deg, #2D3748 0%, #1A202C 100%);
+    }
+}
+
+/* Custom DataTable Wrapper Styling */
+.card .dataTables_wrapper {
+    margin: 0;
+}
+
+.card .table-responsive {
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0;
+}
+
+.card .datatable-filters {
+    margin: calc(-1 * var(--spacing-lg));
+    margin-bottom: 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.card .datatable-controls {
+    margin: 0 calc(-1 * var(--spacing-lg));
+    border-radius: 0;
+}
+
+.card .table {
+    margin: 0;
+}
+
+/* Ensure full width for DataTables */
+.dataTables_wrapper .table {
+    width: 100% !important;
+}
+
+.dataTables_scrollBody {
+    width: 100% !important;
+}
+
+/* Fix for DataTable responsive issues */
+@media (max-width: 768px) {
+    .dataTables_wrapper .dataTables_scrollBody {
+        overflow-x: auto;
+    }
+    
+    .table {
+        min-width: 600px;
     }
 }

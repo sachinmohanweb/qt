@@ -37,8 +37,8 @@
             </div>
         </div>
         
-        <div class="col-md-8">
-            <div class="card mb-4">
+        <div class="col-md-4">
+            <div class="card mb-4 center_card">
                 <div class="card-header">
                     <h4 class="mb-0">Account Information</h4>
                 </div>
@@ -73,7 +73,8 @@
                     </table>
                 </div>
             </div>
-            
+        </div>
+        <div class="col-md-4">
             <div class="card">
                 <div class="card-header">
                     <h4 class="mb-0">Recent Activity</h4>
