@@ -1055,6 +1055,31 @@ a:hover {
     width: 1006px;
 }
 
+.toggle-switch {
+    width: 50px;
+    height: 24px;
+    background-color: #ccc;
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+}
+.toggle-switch.active {
+    background-color: #4caf50;
+}
+.toggle-slider {
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: 0.3s;
+}
+.toggle-switch.active .toggle-slider {
+    left: 28px;
+}
+
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
     :root {
