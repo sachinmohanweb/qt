@@ -38,6 +38,7 @@ class ServiceController extends Controller
         $validated = $request->validate([
             'type_id' => 'required|exists:service_types,id',
             'name' => 'required|string|max:255',
+            'subtitle' => 'required|string|max:255',
             'status' => 'required|in:1,2',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -87,6 +88,7 @@ class ServiceController extends Controller
         $validated = $request->validate([
             'type_id' => 'required|exists:service_types,id',
             'name' => 'required|string|max:255',
+            'subtitle' => 'required|string|max:255',
             'status' => 'required|in:1,2',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);

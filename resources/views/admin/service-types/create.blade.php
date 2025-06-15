@@ -12,7 +12,8 @@
     
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('admin.service-types.store') }}" method="POST" class="needs-validation" novalidate>
+            <form action="{{ route('admin.service-types.store') }}" method="POST" enctype="multipart/form-data"
+            class="needs-validation" novalidate>
                 @csrf
                 
                 <div class="form-group">
@@ -27,6 +28,27 @@
                     <label for="description" class="form-label">Description</label>
                     <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="5" required>{{ old('description') }}</textarea>
                     @error('description')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="image" class="form-label">Icon</label>
+                    <input type="file" class="form-control image-input @error('icon') is-invalid @enderror" id="icon" 
+                    name="icon" data-preview="image-preview" accept="image/*">
+                    @error('icon')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <div class="mt-2">
+                        <img id="image-preview" src="#" alt="Preview" style="max-width: 100%; display: none;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="name" class="form-label">Sub Title</label>
+                    <input type="text" class="form-control @error('subtitle') is-invalid @enderror" id="subtitle" 
+                    name="subtitle" value="{{ old('subtitle') }}" required>
+                    @error('subtitle')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>

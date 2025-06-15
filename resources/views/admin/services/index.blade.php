@@ -38,6 +38,7 @@
                             <th>#</th>
                             <th>Image</th>
                             <th>Name</th>
+                            <th>Subtitle</th>
                             <th>Service Type</th>
                             <th>Status</th>
                             <th>Actions</th>

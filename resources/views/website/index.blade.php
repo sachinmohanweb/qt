@@ -299,7 +299,7 @@
           <div
             class="qot-btn d-flex justify-content-center align-items-center mt-5"
           >
-            <a href="#">
+            <a href="/projects">
               <span>View All Projects</span>
               <img src="web_img/right-arrow.png" alt="" />
             </a>

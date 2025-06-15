@@ -28,7 +28,9 @@
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>Icon</th>
                             <th>Name</th>
+                            <th>Subtitle</th>
                             <th>Description</th>
                             <th>Status</th>
                             <th>Actions</th>

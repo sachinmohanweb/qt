@@ -26,6 +26,14 @@
                         </div>
                         
                         <div class="form-group">
+                            <label for="name" class="form-label">Sub Title</label>
+                            <input type="text" class="form-control @error('subtitle') is-invalid @enderror" id="subtitle" 
+                            name="subtitle" value="{{ old('subtitle') }}" required>
+                            @error('subtitle')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-group">
                             <label for="type_id" class="form-label">Service Type</label>
                             <select class="form-select @error('type_id') is-invalid @enderror" id="type_id" name="type_id" required>
                                 <option value="">Select Service Type</option>

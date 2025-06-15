@@ -25,6 +25,14 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                        <div class="form-group">
+                            <label for="name" class="form-label">Sub Title</label>
+                            <input type="text" class="form-control @error('subtitle') is-invalid @enderror" id="subtitle" 
+                            name="subtitle" value="{{ old('subtitle', $service->subtitle) }}" required>
+                            @error('subtitle')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                         
                         <div class="form-group">
                             <label for="type_id" class="form-label">Service Type</label>

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('type_id')->constrained('service_types')->onDelete('cascade');
             $table->string('name');
+            $table->string('subtitle');
             $table->string('image')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();

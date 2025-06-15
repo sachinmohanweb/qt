@@ -6,6 +6,8 @@ use App\Models\ServiceType;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ServiceTypeController extends Controller
 {
@@ -33,9 +35,17 @@ class ServiceTypeController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'subtitle' => 'required|string|max:255',
             'description' => 'required|string',
             'status' => 'required|in:1,2',
         ]);
+        
+        if ($request->hasFile('icon')) {
+            $imageName = Str::slug($validated['name']) . '-' . time() . '.' . $request->icon->extension();
+            $request->icon->storeAs('service_types', $imageName, 'public');
+            $validated['icon'] = $imageName;
+        }
 
         $serviceType = ServiceType::create($validated);
 
@@ -73,9 +83,22 @@ class ServiceTypeController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'subtitle' => 'required|string|max:255',
             'description' => 'required|string',
             'status' => 'required|in:1,2',
         ]);
+
+        if ($request->hasFile('icon')) {
+            // Delete old image if it exists
+            if ($serviceType->icon && Storage::disk('public')->exists('service_types/' . $serviceType->icon)) {
+                Storage::disk('public')->delete('service_types/' . $serviceType->icon);
+            }
+            
+            $imageName = Str::slug($validated['name']) . '-' . time() . '.' . $request->icon->extension();
+            $request->icon->storeAs('service_types', $imageName, 'public');
+            $validated['icon'] = $imageName;
+        }
 
         $serviceType->update($validated);
 
