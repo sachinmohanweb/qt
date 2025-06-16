@@ -29,6 +29,7 @@
                         <tr>
                             <th>#</th>
                             <th>Icon</th>
+                            <th>BG Image</th>
                             <th>Name</th>
                             <th>Subtitle</th>
                             <th>Description</th>

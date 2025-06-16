@@ -14,6 +14,7 @@ class ServiceType extends Model
         'name',
         'slug',
         'icon',
+        'bg_image',
         'subtitle',
         'description',
         'status',

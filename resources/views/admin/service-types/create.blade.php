@@ -44,6 +44,18 @@
                     </div>
                 </div>
 
+                 <div class="form-group">
+                    <label for="bg_image" class="form-label">Background Image</label>
+                    <input type="file" class="form-control image-input @error('bg_image') is-invalid @enderror" 
+                    id="bg_image" name="bg_image" data-preview="image-preview" accept="image/*">
+                    @error('bg_image')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <div class="mt-2">
+                        <img id="image-preview" src="#" alt="Preview" style="max-width: 100%; display: none;">
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="name" class="form-label">Sub Title</label>
                     <input type="text" class="form-control @error('subtitle') is-invalid @enderror" id="subtitle" 

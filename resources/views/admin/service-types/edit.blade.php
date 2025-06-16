@@ -50,6 +50,23 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="icon" class="form-label">Background Image</label>
+                    @if($serviceType->bg_image)
+                        <div class="mb-2">
+                            <img src="{{ asset('storage/service_types/' . $serviceType->bg_image) }}" alt="{{ $serviceType->name }}" class="img-thumbnail" style="max-height: 150px;">
+                        </div>
+                    @endif
+                    <input type="file" class="form-control image-input @error('bg_image') is-invalid @enderror" 
+                    id="bg_image" name="bg_image" data-preview="image-preview" accept="image/*">
+                    @error('bg_image')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <div class="mt-2">
+                        <img id="image-preview" src="#" alt="Preview" style="max-width: 100%; display: none;">
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="name" class="form-label">Sub Title</label>
                     <input type="text" class="form-control @error('subtitle') is-invalid @enderror" id="subtitle" 
                     name="subtitle" value="{{ old('subtitle', $serviceType->subtitle) }}" required>

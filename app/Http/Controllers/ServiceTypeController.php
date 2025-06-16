@@ -36,6 +36,7 @@ class ServiceTypeController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'bg_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'subtitle' => 'required|string|max:255',
             'description' => 'required|string',
             'status' => 'required|in:1,2',
@@ -45,6 +46,11 @@ class ServiceTypeController extends Controller
             $imageName = Str::slug($validated['name']) . '-' . time() . '.' . $request->icon->extension();
             $request->icon->storeAs('service_types', $imageName, 'public');
             $validated['icon'] = $imageName;
+        }
+        if ($request->hasFile('bg_image')) {
+            $bgimageName = Str::slug($validated['name']) . '-bg_image-' . time() . '.' . $request->bg_image->extension();
+            $request->bg_image->storeAs('service_types', $bgimageName, 'public');
+            $validated['bg_image'] = $bgimageName;
         }
 
         $serviceType = ServiceType::create($validated);
@@ -84,6 +90,7 @@ class ServiceTypeController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'bg_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'subtitle' => 'required|string|max:255',
             'description' => 'required|string',
             'status' => 'required|in:1,2',
@@ -98,6 +105,17 @@ class ServiceTypeController extends Controller
             $imageName = Str::slug($validated['name']) . '-' . time() . '.' . $request->icon->extension();
             $request->icon->storeAs('service_types', $imageName, 'public');
             $validated['icon'] = $imageName;
+        }
+
+        if ($request->hasFile('bg_image')) {
+            // Delete old image if it exists
+            if ($serviceType->icon && Storage::disk('public')->exists('service_types/' . $serviceType->bg_image)) {
+                Storage::disk('public')->delete('service_types/' . $serviceType->bg_image);
+            }
+            
+            $bgimageName = Str::slug($validated['name']) . '-bg_image-' . time() . '.' . $request->bg_image->extension();
+            $request->bg_image->storeAs('service_types', $bgimageName, 'public');
+            $validated['bg_image'] = $bgimageName;
         }
 
         $serviceType->update($validated);
