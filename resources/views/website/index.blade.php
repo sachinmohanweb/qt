@@ -139,108 +139,30 @@
       <div class="portfolio home-portfolio">
         <h2>Where Ideas Become Creations</h2>
         <div class="container">
+
           <div class="project-filter-nav">
-            <button class="filter-btn active" data-filter="residential">
-              Residential
-            </button>
-            <button class="filter-btn" data-filter="commercial">
-              Commercial
-            </button>
-            <button class="filter-btn" data-filter="videos">Videos</button>
+              @foreach($group_services as $index => $type)
+
+                  <button class="filter-btn {{ $index === 0 ? 'active' : '' }}" data-filter="{{ Str::slug($type->name) }}">
+                      {{ $type->name }}
+                  </button>
+              @endforeach
           </div>
 
           <div class="project-grid">
-            <div
-              class="project-item residential"
-              style="background-image: url('web_img/banner1.jpg')"
-            >
-              <div class="project-hover-content">
-                <h3>Residential 1</h3>
-                <p>Description</p>
-              </div>
-            </div>
+              @foreach($group_services as $key=>$type)
+                  @foreach($type->services as $service)
 
-            <div
-              class="project-item commercial"
-              style="background-image: url('web_img/banner2.jpg')"
-            >
-              <div class="project-hover-content">
-                <h3>Commercial 1</h3>
-                <p>Description</p>
-              </div>
-            </div>
-
-            <div
-              class="project-item videos"
-              style="background-image: url('web_img/banner3.jpg')"
-            >
-              <div class="project-hover-content">
-                <h3>Video 1</h3>
-                <p>Description</p>
-              </div>
-<div class="play-button">
-                <img src="web_img/play.png" alt="Play Video">
-              </div>
-            </div>
-            <div
-              class="project-item residential"
-              style="background-image: url('web_img/banner1.jpg')"
-            >
-              <div class="project-hover-content">
-                <h3>Residential 1</h3>
-                <p>Description</p>
-              </div>
-            </div>
-
-            <div
-              class="project-item commercial"
-              style="background-image: url('web_img/banner2.jpg')"
-            >
-              <div class="project-hover-content">
-                <h3>Commercial 1</h3>
-                <p>Description</p>
-              </div>
-            </div>
-
-            <div
-              class="project-item videos"
-              style="background-image: url('web_img/banner3.jpg')"
-            >
-              <div class="project-hover-content">
-                <h3>Video 1</h3>
-                <p>Description</p>
-              </div>
-            </div>
-            <div
-              class="project-item residential"
-              style="background-image: url('web_img/banner1.jpg')"
-            >
-              <div class="project-hover-content">
-                <h3>Residential 1</h3>
-                <p>Description</p>
-              </div>
-            </div>
-
-            <div
-              class="project-item commercial"
-              style="background-image: url('web_img/banner2.jpg')"
-            >
-              <div class="project-hover-content">
-                <h3>Commercial 1</h3>
-                <p>Description</p>
-              </div>
-            </div>
-
-            <div
-              class="project-item videos"
-              style="background-image: url('web_img/banner3.jpg')"
-            >
-              <div class="project-hover-content">
-                <h3>Video 1</h3>
-                <p>Description</p>
-              </div>
-            </div>
+                      <div class="project-item {{ Str::slug($type->name) }} {{ $key === 0 ? 'show' : '' }}" style="background: url('{{ asset($service->image ? 'storage/services/' . $service->image : 'web_img/banner1.jpg') }}');">
+                          <div class="project-hover-content">
+                              <h3>{{ $service->name }}</h3>
+                              <p>{{ $service->subtitle }}</p>
+                          </div>
+                      </div>
+                  @endforeach
+              @endforeach
           </div>
+
 
           <div
             class="qot-btn d-flex justify-content-center align-items-center mt-5"
