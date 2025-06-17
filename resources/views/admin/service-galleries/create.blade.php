@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
-@section('title', 'Add Gallery Image')
+@section('title', 'Add Gallery Images')
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Add Gallery Image</h1>
+        <h1>Add Gallery Images</h1>
         <a href="{{ route('admin.service-galleries.index') }}" class="btn btn-outline-primary">
             <i class="fas fa-arrow-left"></i> Back to List
         </a>
@@ -48,22 +48,66 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="image" class="form-label">Gallery Image</label>
-                    <input type="file" class="form-control image-input @error('image') is-invalid @enderror" id="image" name="image" data-preview="image-preview" accept="image/*" required>
-                    @error('image')
+                    <label for="images" class="form-label">Gallery Images</label>
+                    <input type="file" class="form-control @error('images') is-invalid @enderror @error('images.*') is-invalid @enderror" id="images" name="images[]" accept="image/*" multiple required>
+                    @error('images')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                    <div class="mt-2">
-                        <img id="image-preview" src="#" alt="Preview" style="max-width: 100%; max-height: 300px; display: none;">
+                    @error('images.*')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <small class="form-text text-muted">You can select multiple images at once. Hold Ctrl (Windows) or Cmd (Mac) to select multiple files.</small>
+                    
+                    <div class="mt-3" id="image-previews">
+                        <!-- Image previews will be shown here -->
                     </div>
                 </div>
                 
                 <div class="form-group mt-4 mb-0">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Save Gallery Image
+                        <i class="fas fa-save"></i> Save Gallery Images
                     </button>
                 </div>
             </form>
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+document.getElementById('images').addEventListener('change', function(e) {
+    const previewContainer = document.getElementById('image-previews');
+    previewContainer.innerHTML = '';
+    
+    if (e.target.files.length > 0) {
+        const files = Array.from(e.target.files);
+        
+        files.forEach((file, index) => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const previewDiv = document.createElement('div');
+                    previewDiv.className = 'col-md-3 mb-3';
+                    previewDiv.innerHTML = `
+                        <div class="card">
+                            <img src="${e.target.result}" class="card-img-top" style="height: 150px; object-fit: cover;">
+                            <div class="card-body p-2">
+                                <small class="text-muted">Image ${index + 1}</small>
+                            </div>
+                        </div>
+                    `;
+                    
+                    if (index === 0) {
+                        previewContainer.innerHTML = '<div class="row"></div>';
+                    }
+                    previewContainer.querySelector('.row').appendChild(previewDiv);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+</script>
+@endpush

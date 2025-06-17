@@ -47,7 +47,7 @@
               <div
                 class="author-img-bg rounded-circle d-flex align-items-center justify-content-center"
               >
-                <img src="web_img/favicon.png" alt="Author" />
+                <img src="/web_img/favicon.png" alt="Author" />
               </div>
               <span>{{$blog->user_name}}</span>
             </div>

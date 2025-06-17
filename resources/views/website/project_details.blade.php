@@ -35,7 +35,7 @@
     <section>
       <div class="project-gallery">
         <div class="container">
-          <div class="project-heading">
+          <div class="project-heading" style="padding: 25px;">
             <h1>{{$service_gallery->name}}</h1>
           </div>
           <div class="max-w-6xl mx-auto">

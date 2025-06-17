@@ -12,7 +12,8 @@
     
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('admin.blogs.update', $blog) }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <form action="{{ route('admin.blogs.update', $blog) }}" method="POST" enctype="multipart/form-data" 
+            id="blog-form" class="needs-validation" novalidate >
                 @csrf
                 @method('PUT')
                 
@@ -37,7 +38,12 @@
                         
                         <div class="form-group">
                             <label for="description" class="form-label">Description</label>
-                            <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="8" required>{{ old('description', $blog->description) }}</textarea>
+                            <div id="editor-container" style="height: 400px;">
+                                <div id="editor">{!! old('description', $blog->description) !!}</div>
+                            </div>
+                            <textarea class="form-control @error('description') is-invalid @enderror" 
+                            style="display: none !important;"
+                            id="description" name="description" required >{{ old('description', $blog->description) }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -102,3 +108,85 @@
         </div>
     </div>
 @endsection
+
+@push('styles')
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<style>
+#editor-container {
+    border: 2px solid var(--border);
+    border-radius: var(--radius-md);
+}
+#editor-container.focused {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.1);
+}
+.ql-toolbar {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+.ql-container {
+    border: none;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+.ql-editor {
+    min-height: 300px;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+.ql-container.ql-snow {
+    border: 0px solid #ccc;
+}
+</style>
+@endpush
+
+@push('scripts')
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Quill editor
+    var quill = new Quill('#editor', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                [{ 'align': [] }],
+                ['blockquote', 'code-block'],
+                ['link', 'image'],
+                ['clean']
+            ]
+        },
+        placeholder: 'Write your blog content here...'
+    });
+
+    // Focus styling
+    quill.on('selection-change', function(range) {
+        const container = document.getElementById('editor-container');
+        if (range) {
+            container.classList.add('focused');
+        } else {
+            container.classList.remove('focused');
+        }
+    });
+
+    // Update hidden textarea when form is submitted
+    const form = document.getElementById('blog-form'); // Use your form's ID
+    form.addEventListener('submit', function() {
+        const description = document.getElementById('description');
+        description.value = quill.root.innerHTML;
+    });
+
+    // Set initial content
+    const description = document.getElementById('description');
+    if (description.value) {
+        quill.root.innerHTML = description.value;
+    }
+});
+</script>
+@endpush

@@ -49,18 +49,34 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="image" class="form-label">Gallery Image</label>
+                    <label for="images" class="form-label">Gallery Images</label>
                     @if($serviceGallery->image)
-                        <div class="mb-2">
-                            <img src="{{ asset('storage/service-galleries/' . $serviceGallery->image) }}" alt="Current Image" class="img-thumbnail" style="max-height: 200px;">
+                        <div class="mb-3">
+                            <label class="form-label">Current Image:</label>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card">
+                                        <img src="{{ asset('storage/service-galleries/' . $serviceGallery->image) }}" alt="Current Image" class="card-img-top" style="height: 150px; object-fit: cover;">
+                                        <div class="card-body p-2">
+                                            <small class="text-muted">Current Image</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     @endif
-                    <input type="file" class="form-control image-input @error('image') is-invalid @enderror" id="image" name="image" data-preview="image-preview" accept="image/*">
-                    @error('image')
+                    
+                    <input type="file" class="form-control @error('images') is-invalid @enderror @error('images.*') is-invalid @enderror" id="images" name="images[]" accept="image/*" multiple>
+                    @error('images')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                    <div class="mt-2">
-                        <img id="image-preview" src="#" alt="Preview" style="max-width: 100%; max-height: 300px; display: none;">
+                    @error('images.*')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                    <small class="form-text text-muted">Leave empty to keep current image, or select new images to replace. You can select multiple images.</small>
+                    
+                    <div class="mt-3" id="image-previews">
+                        <!-- Image previews will be shown here -->
                     </div>
                 </div>
                 
@@ -73,3 +89,42 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+document.getElementById('images').addEventListener('change', function(e) {
+    const previewContainer = document.getElementById('image-previews');
+    previewContainer.innerHTML = '';
+    
+    if (e.target.files.length > 0) {
+        const files = Array.from(e.target.files);
+        
+        files.forEach((file, index) => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const previewDiv = document.createElement('div');
+                    previewDiv.className = 'col-md-3 mb-3';
+                    previewDiv.innerHTML = `
+                        <div class="card">
+                            <img src="${e.target.result}" class="card-img-top" style="height: 150px; object-fit: cover;">
+                            <div class="card-body p-2">
+                                <small class="text-muted">New Image ${index + 1}</small>
+                            </div>
+                        </div>
+                    `;
+                    
+                    if (index === 0) {
+                        previewContainer.innerHTML = '<div class="row"></div>';
+                    }
+                    previewContainer.querySelector('.row').appendChild(previewDiv);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
+</script>
+@endpush

@@ -38,24 +38,35 @@ class ServiceGalleryController extends Controller
         $validated = $request->validate([
             'service_id' => 'required|exists:services,id',
             'status' => 'required|in:1,2',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images' => 'required|array|min:1',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $imageName = 'gallery-' . time() . '.' . $request->image->extension();
-        $request->image->storeAs('service-galleries', $imageName, 'public');
-        $validated['image'] = $imageName;
+        $uploadedCount = 0;
+        $service = Service::find($validated['service_id']);
 
-        $gallery = ServiceGallery::create($validated);
+        foreach ($request->file('images') as $image) {
+            $imageName = 'gallery-' . time() . '-' . uniqid() . '.' . $image->extension();
+            $image->storeAs('service-galleries', $imageName, 'public');
+            
+            ServiceGallery::create([
+                'service_id' => $validated['service_id'],
+                'status' => $validated['status'],
+                'image' => $imageName,
+            ]);
+            
+            $uploadedCount++;
+        }
 
         ActivityLog::create([
             'user_id' => Auth::id(),
             'action' => 'create',
-            'description' => 'Added new gallery image for service: ' . $gallery->service->name,
+            'description' => "Added {$uploadedCount} gallery images for service: " . $service->name,
             'ip_address' => $request->ip()
         ]);
 
         return redirect()->route('admin.service-galleries.index')
-            ->with('success', 'Service gallery image added successfully');
+            ->with('success', "{$uploadedCount} gallery images added successfully");
     }
 
     /**
@@ -84,21 +95,43 @@ class ServiceGalleryController extends Controller
         $validated = $request->validate([
             'service_id' => 'required|exists:services,id',
             'status' => 'required|in:1,2',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        if ($request->hasFile('image')) {
+        // Update service and status
+        $serviceGallery->update([
+            'service_id' => $validated['service_id'],
+            'status' => $validated['status'],
+        ]);
+
+        // Handle new images if uploaded
+        if ($request->hasFile('images')) {
             // Delete old image if it exists
             if ($serviceGallery->image && Storage::disk('public')->exists('service-galleries/' . $serviceGallery->image)) {
                 Storage::disk('public')->delete('service-galleries/' . $serviceGallery->image);
             }
             
-            $imageName = 'gallery-' . time() . '.' . $request->image->extension();
-            $request->image->storeAs('service-galleries', $imageName, 'public');
-            $validated['image'] = $imageName;
+            // For edit, we'll use the first uploaded image as the main image
+            $firstImage = $request->file('images')[0];
+            $imageName = 'gallery-' . time() . '-' . uniqid() . '.' . $firstImage->extension();
+            $firstImage->storeAs('service-galleries', $imageName, 'public');
+            
+            $serviceGallery->update(['image' => $imageName]);
+            
+            // Create additional gallery entries for remaining images
+            $additionalImages = array_slice($request->file('images'), 1);
+            foreach ($additionalImages as $image) {
+                $additionalImageName = 'gallery-' . time() . '-' . uniqid() . '.' . $image->extension();
+                $image->storeAs('service-galleries', $additionalImageName, 'public');
+                
+                ServiceGallery::create([
+                    'service_id' => $validated['service_id'],
+                    'status' => $validated['status'],
+                    'image' => $additionalImageName,
+                ]);
+            }
         }
-
-        $serviceGallery->update($validated);
 
         ActivityLog::create([
             'user_id' => Auth::id(),

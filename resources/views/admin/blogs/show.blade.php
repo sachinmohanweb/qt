@@ -63,7 +63,9 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-4">
-                        <p>{{ $blog->description }}</p>
+                        <div class="blog-content">
+                            {!! $blog->description !!}
+                        </div>
                     </div>
                     
                     <h5>Blog Information</h5>
@@ -88,3 +90,53 @@
         </div>
     </div>
 @endsection
+
+@push('styles')
+<style>
+.blog-content {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+.blog-content h1, .blog-content h2, .blog-content h3, 
+.blog-content h4, .blog-content h5, .blog-content h6 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+.blog-content p {
+    margin-bottom: 1rem;
+}
+.blog-content ul, .blog-content ol {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+}
+.blog-content blockquote {
+    border-left: 4px solid var(--primary);
+    padding-left: 1rem;
+    margin: 1rem 0;
+    font-style: italic;
+    background-color: var(--background);
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+}
+.blog-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+    margin: 1rem 0;
+}
+.blog-content code {
+    background-color: var(--background);
+    padding: 0.2rem 0.4rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+}
+.blog-content pre {
+    background-color: var(--background);
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+</style>
+@endpush
