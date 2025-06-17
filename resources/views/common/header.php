@@ -5,10 +5,10 @@
             class="header-sec d-flex justify-content-between align-items-center flex-wrap"
           >
             <div class="logo">
-              <a href="#"><img src="web_img/logo.png" alt="Logo" /></a>
+              <a href="#"><img src="/web_img/logo.png" alt="Logo" /></a>
             </div>
             <div class="contact-header-info">
-              <div class="ph-icon"><img src="web_img/phone.png" alt="" /></div>
+              <div class="ph-icon"><img src="/web_img/phone.png" alt="" /></div>
               <div class="ph-text"><a href="">+91 98745 2145</a></div>
             </div>
             <nav class="navbar">

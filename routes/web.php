@@ -36,7 +36,7 @@ Route::get('/interior', [WebsiteController::class, 'Interior'])->name('web.inter
 Route::get('/maintenance', [WebsiteController::class, 'Maintenance'])->name('web.maintenance');
 Route::get('/about', [WebsiteController::class, 'About'])->name('web.about');
 Route::get('/projects', [WebsiteController::class, 'Project'])->name('web.project');
-Route::get('/project_details', [WebsiteController::class, 'ProjectDetails'])->name('web.project.details');
+Route::get('/project_details/{id}/{slug}', [WebsiteController::class, 'ProjectDetails'])->name('web.project.details');
 Route::get('/blogs', [WebsiteController::class, 'Blog'])->name('web.blog');
 Route::get('/blog_details/{slug}', [WebsiteController::class, 'BlogDetails'])->name('web.blog.details');
 Route::get('/contact', [WebsiteController::class, 'Contact'])->name('web.contact');

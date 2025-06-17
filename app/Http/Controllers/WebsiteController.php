@@ -60,28 +60,29 @@ class WebsiteController extends Controller
 
     }
 
-    public function ProjectDetails(Request $request)
+    public function Project(Request $request)
     {
-        return view('website.project_details');
+        $group_services = ServiceType::orderBy('name')->with('services')->get();
+        return view('website.project',compact('group_services'));
 
     }
 
-    public function Project(Request $request)
+    public function ProjectDetails($id)
     {
-        return view('website.project');
-
+        $service_gallery = Service::where('id',$id)->with('galleries')->first();
+        return view('website.project_details',compact('service_gallery'));
     }
 
     public function Blog(Request $request)
     {
-        return view('website.blog');
+        $blogs = Blog::where('status',1)->orderBy('created_at', 'desc')->get();
+        return view('website.blog',compact('blogs'));
 
     }
 
     public function BlogDetails($slug)
     {
         $blog = Blog::where('slug',$slug)->first();
-
         return view('website.blog_details',compact('blog'));
     }
 

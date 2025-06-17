@@ -50,72 +50,26 @@
         <div class="container">
           <div class="row">
             <div class="blog-sec d-flex flex-wrap">
-              <div class="col-lg-4 col-12">
-                <div class="block" style="background: url(web_img/banner1.jpg)">
-                  <div class="content">
-                    <span>21/02/2024</span>
-                    <h3>
-                      How to Choose a Reliable money transfer Service: Key
-                      Factors to Consider
-                    </h3>
-                    <div
-                      class="blog-view d-flex justify-content-between align-items-center"
-                    >
-                      <div class="by-admin">By Admin</div>
-                      <div class="qot-btn">
-                        <a href="/blog_details">
-                          <span>Learn More</span>
-                          <img src="web_img/right-arrow.png" alt="" />
-                        </a>
+
+                @foreach($blogs as $key=>$value)
+                  <div class="col-lg-4 col-12">
+                   <div class="block" style="background: url('{{ asset($value->image ? 'storage/blogs/' . $value->image : 'web_img/green-house/1.jpg') }}');">
+                      <div class="content">
+                        <span>{{ \Carbon\Carbon::parse($value->date)->format('F j, Y') }}</span>
+                        <h3>{{$value->heading}}</h3>
+                        <div class="blog-view d-flex justify-content-between align-items-center">
+                          <div class="by-admin"> {{$value->user_name}}</div>
+                          <div class="qot-btn">
+                            <a href="blog_details/{{$value->slug}}">
+                              <span>Learn More</span>
+                              <img src="web_img/right-arrow.png" alt="" />
+                            </a>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div class="col-lg-4 col-12">
-                <div class="block" style="background: url(web_img/banner2.jpg)">
-                  <div class="content">
-                    <span>21/02/2024</span>
-                    <h3>
-                      The Benefits of Using Digital Platforms for International
-                      Money Transfers
-                    </h3>
-                    <div
-                      class="blog-view d-flex justify-content-between align-items-center"
-                    >
-                      <div class="by-admin">By Admin</div>
-                      <div class="qot-btn">
-                        <a href="#">
-                          <span>Learn More</span>
-                          <img src="web_img/right-arrow.png" alt="" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4 col-12">
-                <div class="block" style="background: url(web_img/banner3.jpg)">
-                  <div class="content">
-                    <span>21/02/2024</span>
-                    <h3>
-                      Understanding Exchange Rates: How to Get the Best Value
-                      for Your Money
-                    </h3>
-                    <div
-                      class="blog-view d-flex justify-content-between align-items-center"
-                    >
-                      <div class="by-admin">By Admin</div>
-                      <div class="qot-btn">
-                        <a href="blog_details">
-                          <span>Learn More</span>
-                          <img src="web_img/right-arrow.png" alt="" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                @endforeach
             </div>
           </div>
         </div>

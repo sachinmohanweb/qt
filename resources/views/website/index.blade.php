@@ -261,9 +261,7 @@
                     <h3>
                      {{$value->heading}}
                     </h3>
-                    <div
-                      class="blog-view d-flex justify-content-between align-items-center"
-                    >
+                    <div class="blog-view d-flex justify-content-between align-items-center">
                       <div class="by-admin"> {{$value->user_name}}</div>
                       <div class="qot-btn">
                         <a href="blog_details/{{$value->slug}}">

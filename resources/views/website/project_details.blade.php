@@ -36,8 +36,8 @@
       <div class="project-gallery">
         <div class="container">
           <div class="project-heading">
-  <h1>Project Name</h1>
-</div>
+            <h1>{{$service_gallery->name}}</h1>
+          </div>
           <div class="max-w-6xl mx-auto">
             <div
               class="grid"
@@ -46,76 +46,16 @@
               <div class="grid-sizer"></div>
 
               <!-- Image Items with Fancybox -->
-              <div class="grid-item">
-                <a data-fancybox="gallery" href="web_img/green-house/1.jpg">
-                  <img src="web_img/green-house/1.jpg" alt="Green House 1" />
-                </a>
-              </div>
-              <div class="grid-item">
-                <a data-fancybox="gallery" href="web_img/green-house/2.jpg">
-                  <img src="web_img/green-house/2.jpg" alt="Green House 2" />
-                </a>
-              </div>
-              <div class="grid-item">
-                <a data-fancybox="gallery" href="web_img/green-house/3.jpg">
-                  <img src="web_img/green-house/3.jpg" alt="Green House 3" />
-                </a>
-              </div>
-              <div class="grid-item">
-                <a data-fancybox="gallery" href="web_img/green-house/4.jpg">
-                  <img src="web_img/green-house/4.jpg" alt="Green House 4" />
-                </a>
-              </div>
-              <div class="grid-item">
-                <a data-fancybox="gallery" href="web_img/green-house/5.jpg">
-                  <img src="web_img/green-house/5.jpg" alt="Green House 5" />
-                </a>
-              </div>
-              <div class="grid-item">
-                <a data-fancybox="gallery" href="web_img/green-house/6.jpg">
-                  <img src="web_img/green-house/6.jpg" alt="Green House 6" />
-                </a>
-              </div>
-              <div class="grid-item">
-                <a data-fancybox="gallery" href="web_img/green-house/7.jpg">
-                  <img src="web_img/green-house/7.jpg" alt="Green House 7" />
-                </a>
-              </div>
-              <div class="grid-item">
-                <a data-fancybox="gallery" href="web_img/green-house/8.jpg">
-                  <img src="web_img/green-house/8.jpg" alt="Green House 8" />
-                </a>
-              </div>
-              <div class="grid-item">
-                <a data-fancybox="gallery" href="web_img/green-house/9.jpg">
-                  <img src="web_img/green-house/9.jpg" alt="Green House 9" />
-                </a>
-              </div>
-              <div class="grid-item">
-                <a data-fancybox="gallery" href="web_img/green-house/10.jpg">
-                  <img src="web_img/green-house/10.jpg" alt="Green House 10" />
-                </a>
-              </div>
-              <div class="grid-item">
-                <a data-fancybox="gallery" href="web_img/green-house/11.jpg">
-                  <img src="web_img/green-house/11.jpg" alt="Green House 11" />
-                </a>
-              </div>
-              <div class="grid-item">
-                <a data-fancybox="gallery" href="web_img/green-house/12.jpg">
-                  <img src="web_img/green-house/12.jpg" alt="Green House 12" />
-                </a>
-              </div>
-              <div class="grid-item">
-                <a data-fancybox="gallery" href="web_img/green-house/13.jpg">
-                  <img src="web_img/green-house/13.jpg" alt="Green House 13" />
-                </a>
-              </div>
-              <div class="grid-item">
-                <a data-fancybox="gallery" href="web_img/green-house/14.jpg">
-                  <img src="web_img/green-house/14.jpg" alt="Green House 14" />
-                </a>
-              </div>
+              
+              @foreach($service_gallery->galleries as $item)
+                <div class="grid-item">
+                  <a data-fancybox="gallery" href="{{ asset($item->image ? 'storage/service-galleries/' . $item->image : 'web_img/banner1.jpg') }}">
+                    <img src="{{ asset($item->image ? 'storage/service-galleries/' . $item->image : 'web_img/green-house/1.jpg') }}" alt={{$service_gallery->name}}" />
+                  </a>
+                </div>
+              @endforeach
+
+
             </div>
           </div>
         </div>
@@ -130,7 +70,7 @@
               <h3>Let’s turn your idea <br />into reality</h3>
               <div class="info d-flex align-items-center mb-2">
                 <div class="info-img text-right">
-                  <img src="web_img/call.webp" alt="" style="max-width: 35px" />
+                  <img src="/web_img/call.webp" alt="" style="max-width: 35px" />
                 </div>
                 <a href="tel:+91 963 368 0408" target="_blank"
                   >+91 963 368 0408</a
@@ -141,7 +81,7 @@
                 data-aos="fade-up-left"
               >
                 <div class="info-img">
-                  <img src="web_img/email.webp" alt="" />
+                  <img src="/web_img/email.webp" alt="" />
                 </div>
                 <a href="mailto:consultant@qot.co.in" target="_blank"
                   >consultant@qot.co.in</a
