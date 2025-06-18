@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ServiceGallery;
-use App\Models\Service;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Models\ProjectImage;
+use App\Models\Project;
 
 class ServiceGalleryController extends Controller
 {
@@ -17,7 +17,7 @@ class ServiceGalleryController extends Controller
      */
     public function index()
     {
-        $galleries = ServiceGallery::with('service')->orderBy('created_at', 'desc')->paginate(10);
+        $galleries = ProjectImage::with('Project')->orderBy('created_at', 'desc')->paginate(10);
         return view('admin.service-galleries.index', compact('galleries'));
     }
 
@@ -26,7 +26,7 @@ class ServiceGalleryController extends Controller
      */
     public function create()
     {
-        $services = Service::where('status', 1)->get();
+        $services = Project::where('status', 1)->get();
         return view('admin.service-galleries.create', compact('services'));
     }
 
@@ -36,7 +36,7 @@ class ServiceGalleryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'service_id' => 'required|exists:services,id',
+            'project_id' => 'required|exists:projects,id',
             'status' => 'required|in:1,2',
             'images' => 'required|array|min:1',
             'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -47,9 +47,9 @@ class ServiceGalleryController extends Controller
 
         foreach ($request->file('images') as $image) {
             $imageName = 'gallery-' . time() . '-' . uniqid() . '.' . $image->extension();
-            $image->storeAs('service-galleries', $imageName, 'public');
+            $image->storeAs('project_images', $imageName, 'public');
             
-            ServiceGallery::create([
+            ProjectImage::create([
                 'service_id' => $validated['service_id'],
                 'status' => $validated['status'],
                 'image' => $imageName,
@@ -72,28 +72,28 @@ class ServiceGalleryController extends Controller
     /**
      * Display the specified service gallery.
      */
-    public function show(ServiceGallery $serviceGallery)
+    public function show(ProjectImage $serviceGallery)
     {
-        $serviceGallery->load('service');
+        $serviceGallery->load('Project');
         return view('admin.service-galleries.show', compact('serviceGallery'));
     }
 
     /**
      * Show the form for editing the specified service gallery.
      */
-    public function edit(ServiceGallery $serviceGallery)
+    public function edit(ProjectImage $serviceGallery)
     {
-        $services = Service::where('status', 1)->get();
+        $services = Project::where('status', 1)->get();
         return view('admin.service-galleries.edit', compact('serviceGallery', 'services'));
     }
 
     /**
      * Update the specified service gallery in storage.
      */
-    public function update(Request $request, ServiceGallery $serviceGallery)
+    public function update(Request $request, ProjectImage $serviceGallery)
     {
         $validated = $request->validate([
-            'service_id' => 'required|exists:services,id',
+            'project_id' => 'required|exists:services,id',
             'status' => 'required|in:1,2',
             'images' => 'nullable|array',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -108,14 +108,14 @@ class ServiceGalleryController extends Controller
         // Handle new images if uploaded
         if ($request->hasFile('images')) {
             // Delete old image if it exists
-            if ($serviceGallery->image && Storage::disk('public')->exists('service-galleries/' . $serviceGallery->image)) {
-                Storage::disk('public')->delete('service-galleries/' . $serviceGallery->image);
+            if ($serviceGallery->image && Storage::disk('public')->exists('project_images/' . $serviceGallery->image)) {
+                Storage::disk('public')->delete('project_images/' . $serviceGallery->image);
             }
             
             // For edit, we'll use the first uploaded image as the main image
             $firstImage = $request->file('images')[0];
             $imageName = 'gallery-' . time() . '-' . uniqid() . '.' . $firstImage->extension();
-            $firstImage->storeAs('service-galleries', $imageName, 'public');
+            $firstImage->storeAs('project_images', $imageName, 'public');
             
             $serviceGallery->update(['image' => $imageName]);
             
@@ -123,7 +123,7 @@ class ServiceGalleryController extends Controller
             $additionalImages = array_slice($request->file('images'), 1);
             foreach ($additionalImages as $image) {
                 $additionalImageName = 'gallery-' . time() . '-' . uniqid() . '.' . $image->extension();
-                $image->storeAs('service-galleries', $additionalImageName, 'public');
+                $image->storeAs('project_images', $additionalImageName, 'public');
                 
                 ServiceGallery::create([
                     'service_id' => $validated['service_id'],
@@ -147,11 +147,11 @@ class ServiceGalleryController extends Controller
     /**
      * Remove the specified service gallery from storage.
      */
-    public function destroy(Request $request, ServiceGallery $serviceGallery)
+    public function destroy(Request $request, ProjectImage $serviceGallery)
     {
         // Delete gallery image if it exists
-        if ($serviceGallery->image && Storage::disk('public')->exists('service-galleries/' . $serviceGallery->image)) {
-            Storage::disk('public')->delete('service-galleries/' . $serviceGallery->image);
+        if ($serviceGallery->image && Storage::disk('public')->exists('project_images/' . $serviceGallery->image)) {
+            Storage::disk('public')->delete('project_images/' . $serviceGallery->image);
         }
 
         ActivityLog::create([
@@ -170,7 +170,7 @@ class ServiceGalleryController extends Controller
     /**
      * Toggle status
      */
-    public function toggleStatus(Request $request, ServiceGallery $serviceGallery)
+    public function toggleStatus(Request $request, ProjectImage $serviceGallery)
     {
         $serviceGallery->update([
             'status' => $serviceGallery->status == 1 ? 2 : 1

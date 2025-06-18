@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Service;
-use App\Models\ServiceType;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Models\MenuItem;
+use App\Models\Project;
 
 class ServiceController extends Controller
 {
@@ -17,7 +17,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = Service::with('serviceType')->orderBy('created_at', 'desc')->paginate(10);
+        $services = Project::with('MenuItem')->orderBy('created_at', 'desc')->paginate(10);
         return view('admin.services.index', compact('services'));
     }
 
@@ -26,7 +26,7 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        $serviceTypes = ServiceType::where('status', 1)->get();
+        $serviceTypes = MenuItem::where('status', 1)->get();
         return view('admin.services.create', compact('serviceTypes'));
     }
 
@@ -36,20 +36,21 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'type_id' => 'required|exists:service_types,id',
+            'menu_item_id' => 'required|exists:menu_items,id',
             'name' => 'required|string|max:255',
             'subtitle' => 'required|string|max:255',
             'status' => 'required|in:1,2',
+            'home_visibility' => 'required|in:1,2',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($request->hasFile('image')) {
             $imageName = Str::slug($validated['name']) . '-' . time() . '.' . $request->image->extension();
-            $request->image->storeAs('services', $imageName, 'public');
+            $request->image->storeAs('projects', $imageName, 'public');
             $validated['image'] = $imageName;
         }
 
-        $service = Service::create($validated);
+        $service = Project::create($validated);
 
         ActivityLog::create([
             'user_id' => Auth::id(),
@@ -65,42 +66,43 @@ class ServiceController extends Controller
     /**
      * Display the specified service.
      */
-    public function show(Service $service)
+    public function show(Project $service)
     {
-        $service->load('serviceType', 'galleries');
+        $service->load('MenuItem', 'ProjectImages');
         return view('admin.services.show', compact('service'));
     }
 
     /**
      * Show the form for editing the specified service.
      */
-    public function edit(Service $service)
+    public function edit(Project $service)
     {
-        $serviceTypes = ServiceType::where('status', 1)->get();
+        $serviceTypes = MenuItem::where('status', 1)->where('type',1)->get();
         return view('admin.services.edit', compact('service', 'serviceTypes'));
     }
 
     /**
      * Update the specified service in storage.
      */
-    public function update(Request $request, Service $service)
+    public function update(Request $request, Project $service)
     {
         $validated = $request->validate([
-            'type_id' => 'required|exists:service_types,id',
+            'menu_item_id' => 'required|exists:services,id',
             'name' => 'required|string|max:255',
             'subtitle' => 'required|string|max:255',
             'status' => 'required|in:1,2',
+            'home_visibility' => 'required|in:1,2',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($request->hasFile('image')) {
             // Delete old image if it exists
-            if ($service->image && Storage::disk('public')->exists('services/' . $service->image)) {
-                Storage::disk('public')->delete('services/' . $service->image);
+            if ($service->image && Storage::disk('public')->exists('projects/' . $service->image)) {
+                Storage::disk('public')->delete('projects/' . $service->image);
             }
             
             $imageName = Str::slug($validated['name']) . '-' . time() . '.' . $request->image->extension();
-            $request->image->storeAs('services', $imageName, 'public');
+            $request->image->storeAs('projects', $imageName, 'public');
             $validated['image'] = $imageName;
         }
 
@@ -120,11 +122,11 @@ class ServiceController extends Controller
     /**
      * Remove the specified service from storage.
      */
-    public function destroy(Request $request, Service $service)
+    public function destroy(Request $request, Project $service)
     {
         // Delete service image if it exists
-        if ($service->image && Storage::disk('public')->exists('services/' . $service->image)) {
-            Storage::disk('public')->delete('services/' . $service->image);
+        if ($service->image && Storage::disk('public')->exists('projects/' . $service->image)) {
+            Storage::disk('public')->delete('projects/' . $service->image);
         }
 
         ActivityLog::create([
@@ -143,7 +145,7 @@ class ServiceController extends Controller
     /**
      * Toggle status
      */
-    public function toggleStatus(Request $request, Service $service)
+    public function toggleStatus(Request $request, Project $service)
     {
         $service->update([
             'status' => $service->status == 1 ? 2 : 1

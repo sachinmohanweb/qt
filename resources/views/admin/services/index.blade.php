@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Services Management')
+@section('title', 'Project Management')
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Services Management</h1>
+        <h1>Project Management</h1>
         <a href="{{ route('admin.services.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Add New Service
+            <i class="fas fa-plus"></i> Add New Project
         </a>
     </div>
     
@@ -19,11 +19,11 @@
     <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
-                <h4 class="mb-0">All Services</h4>
+                <h4 class="mb-0">All Menu items</h4>
                 <div class="d-flex gap-2">
                     <select id="type-filter" class="form-select form_select" style="width: 200px;">
-                        <option value="">All Service Types</option>
-                        @foreach(\App\Models\ServiceType::where('status', 1)->get() as $type)
+                        <option value="">All Menu Items</option>
+                        @foreach(\App\Models\Menuitem::where('status', 1)->where('type',1)->get() as $type)
                             <option value="{{ $type->id }}">{{ $type->name }}</option>
                         @endforeach
                     </select>
@@ -39,7 +39,8 @@
                             <th>Image</th>
                             <th>Name</th>
                             <th>Subtitle</th>
-                            <th>Service Type</th>
+                            <th>Menu Item</th>
+                            <th>Home Visibility</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>

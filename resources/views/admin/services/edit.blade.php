@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Service')
+@section('title', 'Edit Project')
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Edit Service</h1>
+        <h1>Edit Project</h1>
         <a href="{{ route('admin.services.index') }}" class="btn btn-outline-primary">
             <i class="fas fa-arrow-left"></i> Back to List
         </a>
@@ -35,11 +35,12 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="type_id" class="form-label">Service Type</label>
-                            <select class="form-select @error('type_id') is-invalid @enderror" id="type_id" name="type_id" required>
-                                <option value="">Select Service Type</option>
+                            <label for="type_id" class="form-label">Menu Item</label>
+                            <select class="form-select @error('type_id') is-invalid @enderror" id="menu_item_id" 
+                            name="menu_item_id" required>
+                                <option value="">Select Menu Item</option>
                                 @foreach($serviceTypes as $serviceType)
-                                    <option value="{{ $serviceType->id }}" {{ old('type_id', $service->type_id) == $serviceType->id ? 'selected' : '' }}>
+                                    <option value="{{ $serviceType->id }}" {{ old('menu_item_id', $service->menu_item_id) == $serviceType->id ? 'selected' : '' }}>
                                         {{ $serviceType->name }}
                                     </option>
                                 @endforeach
@@ -61,12 +62,25 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+
+                        <div class="form-group">
+                            <label for="status" class="form-label">Home Visibility</label>
+                            <select class="form-select @error('status') is-invalid @enderror" id="home_visibility" 4
+                            name="home_visibility" required>
+                                <option value="1" {{ old('status', $service->home_visibility) == '1' ? 'selected' : '' }}>Show</option>
+                                <option value="2" {{ old('status', $service->home_visibility) == '2' ? 'selected' : '' }}>Hide</option>
+                            </select>
+                            @error('home_visibility')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         
                         <div class="form-group">
                             <label for="image" class="form-label">Service Image</label>
                             @if($service->image)
                                 <div class="mb-2">
-                                    <img src="{{ asset('storage/services/' . $service->image) }}" alt="{{ $service->name }}" class="img-thumbnail" style="max-height: 150px;">
+                                    <img src="{{ asset('storage/projects/' . $service->image) }}" alt="{{ $service->name }}" class="img-thumbnail" style="max-height: 150px;">
                                 </div>
                             @endif
                             <input type="file" class="form-control image-input @error('image') is-invalid @enderror" id="image" name="image" data-preview="image-preview" accept="image/*">
@@ -82,7 +96,7 @@
                 
                 <div class="form-group mt-4 mb-0">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Update Service
+                        <i class="fas fa-save"></i> Update Project
                     </button>
                 </div>
             </form>

@@ -133,15 +133,15 @@ class DataTableController extends Controller
      */
     public function services(Request $request)
     {
-        $query = Service::with('serviceType');
+        $query = Project::orderBy('id')->with('MenuItem');
 
         if ($request->has('type_filter') && $request->type_filter != '') {
-            $query->where('type_id', $request->type_filter);
+            $query->where('menu_item_id', $request->type_filter);
         }
 
         return DataTables::of($query)
-            ->addColumn('service_type', function ($service) {
-                return $service->serviceType->name;
+            ->addColumn('menu_item_id', function ($service) {
+                return $service->MenuItem->name;
             })
             ->addColumn('actions', function ($service) {
                 $actions = '<div class="btn-group">';

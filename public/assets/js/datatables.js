@@ -226,7 +226,7 @@ $(document).ready(function() {
                     searchable: false,
                     render: function(data, type, row) {
                         if (data) {
-                            return `<img src="/storage/services/${data}" alt="${row.name}" style="height: 40px; width: 40px; object-fit: cover; border-radius: 4px;">`;
+                            return `<img src="/storage/projects/${data}" alt="${row.name}" style="height: 40px; width: 40px; object-fit: cover; border-radius: 4px;">`;
                         } else {
                             return `<div style="height: 40px; width: 40px; background-color: #f3f4f6; border-radius: 4px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-tools text-secondary"></i></div>`;
                         }
@@ -235,10 +235,19 @@ $(document).ready(function() {
                 { data: 'name', name: 'name' },
                 { data: 'subtitle', name: 'subtitle' },
                 { 
-                    data: 'service_type', 
-                    name: 'serviceType.name',
+                    data: 'menu_item_id', 
+                    name: 'MenuItem.name',
                     render: function(data) {
                         return `<span class="badge badge-primary">${data}</span>`;
+                    }
+                },
+                { 
+                    data: 'home_visibility', 
+                    name: 'home_visibility',
+                    orderable: false,
+                    render: function(data, type, row) {
+                        const isActive = data == 1 ? 'active' : '';
+                        return `<div class="toggle-switch ${isActive}" onclick="toggleStatus('/admin/services/${row.id}/toggle-status', this)"><div class="toggle-slider"></div></div>`;
                     }
                 },
                 { 
