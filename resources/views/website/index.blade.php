@@ -72,28 +72,83 @@
       <div class="about-qot d-flex justify-content-between flex-wrap">
         <div class="col-lg-6 col-12">
           <div class="about-left">
-            @foreach($service_types as $key=>$value)
-            <div class="col-sm-6 col-12">
+                       <div class="col-sm-6 col-12">
               <div class="box" style="background-color: #333">
                 <div
                   class="image"
-                  style="background-image: url('web_img/diamond.png')"
+                  style="background-image: url('img/diamond.png')"
                 >
-                <img src="{{ $value->icon ? asset('storage/service_types/' . $value->icon) : asset('web_img/icons/1.png') }}" alt="Icon" />
-
+                  <img src="img/icons/1.png" alt="" />
                 </div>
 
-                <h2>{{$value->name}}</h2>
-                <p>{{$value->subtitle}}</p>
+                <h2>Design</h2>
+                <p>Tomorrow’s Thinking</p>
                 <div class="qot-btn">
-                  <a href="{{$value->slug}}">
+                  <a href="design">
                     <span>Learn More</span>
-                    <img src="web_img/right-arrow.png" alt="" />
+                    <img src="img/right-arrow.png" alt="" />
                   </a>
                 </div>
               </div>
             </div>
-            @endforeach
+            <div class="col-sm-6 col-12">
+              <div class="box" style="background-color: #444">
+                <div
+                  class="image"
+                  style="background-image: url('img/diamond.png')"
+                >
+                  <img src="img/icons/2.png" alt="" />
+                </div>
+
+                <h2>Construction</h2>
+                <p>Masterminds of Space</p>
+                <div class="qot-btn">
+                  <a href="construction">
+                    <span>Learn More</span>
+                    <img src="img/right-arrow.png" alt="" />
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-12">
+              <div class="box" style="background-color: #555">
+                <div
+                  class="image"
+                  style="background-image: url('img/diamond.png')"
+                >
+                  <img src="img/icons/3.png" alt="" />
+                </div>
+
+                <h2>Interior</h2>
+                <p>Crafted Spaces</p>
+                <div class="qot-btn">
+                  <a href="interior">
+                    <span>Learn More</span>
+                    <img src="img/right-arrow.png" alt="" />
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-12">
+              <div class="box" style="background-color: #666">
+                <div
+                  class="image"
+                  style="background-image: url('img/diamond.png')"
+                >
+                  <img src="img/icons/4.png" alt="" />
+                </div>
+
+                <h2>Maintenance</h2>
+                <p>Complete Solutions</p>
+                <div class="qot-btn">
+                  <a href="maintenance">
+                    <span>Learn More</span>
+                    <img src="img/right-arrow.png" alt="" />
+                  </a>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
         <div class="col-lg-6 col-12">

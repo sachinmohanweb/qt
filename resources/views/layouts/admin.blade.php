@@ -31,16 +31,6 @@
                     <span>Users</span>
                 </a>
                 
-                <!-- <a href="{{ route('admin.products.index') }}" class="menu-item {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
-                    <i class="fas fa-box"></i>
-                    <span>Products</span>
-                </a>
-                
-                <a href="{{ route('admin.feedback.index') }}" class="menu-item {{ request()->routeIs('admin.feedback.*') ? 'active' : '' }}">
-                    <i class="fas fa-comment"></i>
-                    <span>Feedback</span>
-                </a> -->
-                
                 <a href="{{ route('admin.testimonials.index') }}" class="menu-item {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
                     <i class="fas fa-star"></i>
                     <span>Testimonials</span>
@@ -53,17 +43,17 @@
                 
                 <a href="{{ route('admin.service-types.index') }}" class="menu-item {{ request()->routeIs('admin.service-types.*') ? 'active' : '' }}">
                     <i class="fas fa-cogs"></i>
-                    <span>Service Types</span>
+                    <span>Menu Type</span>
                 </a>
                 
                 <a href="{{ route('admin.services.index') }}" class="menu-item {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
                     <i class="fas fa-tools"></i>
-                    <span>Services</span>
+                    <span>Projects</span>
                 </a>
                 
                 <a href="{{ route('admin.service-galleries.index') }}" class="menu-item {{ request()->routeIs('admin.service-galleries.*') ? 'active' : '' }}">
                     <i class="fas fa-images"></i>
-                    <span>Service Gallery</span>
+                    <span>Gallery</span>
                 </a>
             </nav>
         </aside>
