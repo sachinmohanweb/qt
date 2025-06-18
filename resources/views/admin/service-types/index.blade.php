@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 
-@section('title', 'Service Types Management')
+@section('title', 'Menu Items Management')
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Service Types Management</h1>
+        <h1>Menu Items Management</h1>
         <a href="{{ route('admin.service-types.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Add New Service Type
+            <i class="fas fa-plus"></i> Add New Item
         </a>
     </div>
     
@@ -28,11 +28,8 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Icon</th>
-                            <th>BG Image</th>
+                            <th>Type</th>
                             <th>Name</th>
-                            <th>Subtitle</th>
-                            <th>Description</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>

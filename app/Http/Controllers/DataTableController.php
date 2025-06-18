@@ -7,9 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Testimonial;
 use App\Models\Blog;
-use App\Models\ServiceType;
-use App\Models\Service;
-use App\Models\ServiceGallery;
+use App\Models\MenuItem;
+use App\Models\Project;
+use App\Models\ProjectImage;
+use App\Models\VideoItem;
 use Yajra\DataTables\Facades\DataTables;
 
 
@@ -109,7 +110,7 @@ class DataTableController extends Controller
      */
     public function serviceTypes(Request $request)
     {
-        $query = ServiceType::query();
+        $query = MenuItem::query()->orderBy('id');
 
         return DataTables::of($query)
             ->addColumn('actions', function ($serviceType) {

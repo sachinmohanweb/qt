@@ -187,41 +187,8 @@ $(document).ready(function() {
             ajax: '/admin/service-types/data',
             columns: [
                 { data: 'id', name: 'id' },
-                { 
-                    data: 'icon', 
-                    name: 'icon', 
-                    orderable: false, 
-                    searchable: false,
-                    render: function(data, type, row) {
-                        if (data) {
-                            return `<img src="/storage/service_types/${data}" alt="${row.heading}" style="height: 40px; width: 40px; object-fit: cover; border-radius: 4px;">`;
-                        } else {
-                            return `<div style="height: 40px; width: 40px; background-color: #f3f4f6; border-radius: 4px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-image text-secondary"></i></div>`;
-                        }
-                    }
-                },
-                { 
-                    data: 'bg_image', 
-                    name: 'bg_image', 
-                    orderable: false, 
-                    searchable: false,
-                    render: function(data, type, row) {
-                        if (data) {
-                            return `<img src="/storage/service_types/${data}" alt="${row.heading}" style="height: 40px; width: 40px; object-fit: cover; border-radius: 4px;">`;
-                        } else {
-                            return `<div style="height: 40px; width: 40px; background-color: #f3f4f6; border-radius: 4px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-image text-secondary"></i></div>`;
-                        }
-                    }
-                },
+                { data: 'type', name: 'type' },
                 { data: 'name', name: 'name' },
-                { data: 'subtitle', name: 'subtitle' },
-                { 
-                    data: 'description', 
-                    name: 'description',
-                    render: function(data) {
-                        return data.length > 50 ? data.substring(0, 50) + '...' : data;
-                    }
-                },
                 { 
                     data: 'status', 
                     name: 'status',

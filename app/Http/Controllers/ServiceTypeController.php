@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ServiceType;
 use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use App\Models\MenuItem;
 
 class ServiceTypeController extends Controller
 {
@@ -16,7 +16,7 @@ class ServiceTypeController extends Controller
      */
     public function index()
     {
-        $serviceTypes = ServiceType::orderBy('created_at', 'desc')->paginate(10);
+        $serviceTypes = MenuItem::orderBy('created_at', 'desc')->get();
         return view('admin.service-types.index', compact('serviceTypes'));
     }
 
@@ -34,26 +34,12 @@ class ServiceTypeController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'type' => 'required|in:1,2',
             'name' => 'required|string|max:255',
-            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'bg_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'subtitle' => 'required|string|max:255',
-            'description' => 'required|string',
             'status' => 'required|in:1,2',
         ]);
-        
-        if ($request->hasFile('icon')) {
-            $imageName = Str::slug($validated['name']) . '-' . time() . '.' . $request->icon->extension();
-            $request->icon->storeAs('service_types', $imageName, 'public');
-            $validated['icon'] = $imageName;
-        }
-        if ($request->hasFile('bg_image')) {
-            $bgimageName = Str::slug($validated['name']) . '-bg_image-' . time() . '.' . $request->bg_image->extension();
-            $request->bg_image->storeAs('service_types', $bgimageName, 'public');
-            $validated['bg_image'] = $bgimageName;
-        }
 
-        $serviceType = ServiceType::create($validated);
+        $serviceType = MenuItem::create($validated);
 
         ActivityLog::create([
             'user_id' => Auth::id(),
@@ -69,7 +55,7 @@ class ServiceTypeController extends Controller
     /**
      * Display the specified service type.
      */
-    public function show(ServiceType $serviceType)
+    public function show(MenuItem $serviceType)
     {
         return view('admin.service-types.show', compact('serviceType'));
     }
@@ -77,7 +63,7 @@ class ServiceTypeController extends Controller
     /**
      * Show the form for editing the specified service type.
      */
-    public function edit(ServiceType $serviceType)
+    public function edit(MenuItem $serviceType)
     {
         return view('admin.service-types.edit', compact('serviceType'));
     }
@@ -85,38 +71,13 @@ class ServiceTypeController extends Controller
     /**
      * Update the specified service type in storage.
      */
-    public function update(Request $request, ServiceType $serviceType)
+    public function update(Request $request, MenuItem $serviceType)
     {
         $validated = $request->validate([
+            'type' => 'required|in:1,2',
             'name' => 'required|string|max:255',
-            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'bg_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'subtitle' => 'required|string|max:255',
-            'description' => 'required|string',
             'status' => 'required|in:1,2',
         ]);
-
-        if ($request->hasFile('icon')) {
-            // Delete old image if it exists
-            if ($serviceType->icon && Storage::disk('public')->exists('service_types/' . $serviceType->icon)) {
-                Storage::disk('public')->delete('service_types/' . $serviceType->icon);
-            }
-            
-            $imageName = Str::slug($validated['name']) . '-' . time() . '.' . $request->icon->extension();
-            $request->icon->storeAs('service_types', $imageName, 'public');
-            $validated['icon'] = $imageName;
-        }
-
-        if ($request->hasFile('bg_image')) {
-            // Delete old image if it exists
-            if ($serviceType->icon && Storage::disk('public')->exists('service_types/' . $serviceType->bg_image)) {
-                Storage::disk('public')->delete('service_types/' . $serviceType->bg_image);
-            }
-            
-            $bgimageName = Str::slug($validated['name']) . '-bg_image-' . time() . '.' . $request->bg_image->extension();
-            $request->bg_image->storeAs('service_types', $bgimageName, 'public');
-            $validated['bg_image'] = $bgimageName;
-        }
 
         $serviceType->update($validated);
 
@@ -134,7 +95,7 @@ class ServiceTypeController extends Controller
     /**
      * Remove the specified service type from storage.
      */
-    public function destroy(Request $request, ServiceType $serviceType)
+    public function destroy(Request $request, MenuItem $serviceType)
     {
         ActivityLog::create([
             'user_id' => Auth::id(),
@@ -152,7 +113,7 @@ class ServiceTypeController extends Controller
     /**
      * Toggle status
      */
-    public function toggleStatus(Request $request, ServiceType $serviceType)
+    public function toggleStatus(Request $request, MenuItem $serviceType)
     {
         $serviceType->update([
             'status' => $serviceType->status == 1 ? 2 : 1

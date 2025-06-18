@@ -43,7 +43,7 @@
                 
                 <a href="{{ route('admin.service-types.index') }}" class="menu-item {{ request()->routeIs('admin.service-types.*') ? 'active' : '' }}">
                     <i class="fas fa-cogs"></i>
-                    <span>Menu Type</span>
+                    <span>Menu Items</span>
                 </a>
                 
                 <a href="{{ route('admin.services.index') }}" class="menu-item {{ request()->routeIs('admin.services.*') ? 'active' : '' }}">
@@ -53,7 +53,11 @@
                 
                 <a href="{{ route('admin.service-galleries.index') }}" class="menu-item {{ request()->routeIs('admin.service-galleries.*') ? 'active' : '' }}">
                     <i class="fas fa-images"></i>
-                    <span>Gallery</span>
+                    <span>Project Images</span>
+                </a>
+                <a href="{{ route('admin.service-galleries.index') }}" class="menu-item {{ request()->routeIs('admin.service-galleries.*') ? 'active' : '' }}">
+                    <i class="fas fa-images"></i>
+                    <span>Video Items</span>
                 </a>
             </nav>
         </aside>

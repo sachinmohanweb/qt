@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
-@section('title', 'View Service Type')
+@section('title', 'View Menu Item')
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Service Type Details</h1>
+        <h1>Menu Item Details</h1>
         <div>
             <a href="{{ route('admin.service-types.edit', $serviceType) }}" class="btn btn-primary">
                 <i class="fas fa-edit"></i> Edit
@@ -25,11 +25,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="mb-4">
-                <h5>Description</h5>
-                <p>{{ $serviceType->description }}</p>
-            </div>
-            
+           
             <h5>Service Type Information</h5>
             <table class="table">
                 <tbody>
@@ -47,14 +43,14 @@
                     </tr>
                     <tr>
                         <th>Services Count</th>
-                        <td>{{ $serviceType->services->count() }} services</td>
+                        <td>{{ $serviceType->projects->count() }} projects</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
     
-    @if($serviceType->services->count() > 0)
+    @if($serviceType->projects->count() > 0)
         <div class="card">
             <div class="card-header">
                 <h4 class="mb-0">Related Services</h4>
@@ -71,7 +67,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($serviceType->services as $service)
+                            @foreach($serviceType->projects as $service)
                                 <tr>
                                     <td>{{ $service->name }}</td>
                                     <td>
