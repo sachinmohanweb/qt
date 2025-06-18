@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ServiceGallery extends Model
+class ProjectImage extends Model
 {
+    protected $table = 'service_galleries';
+
     use HasFactory;
 
     protected $fillable = [
-        'service_id',
+        'project_id',
         'image',
         'status',
     ];
@@ -18,8 +20,8 @@ class ServiceGallery extends Model
     /**
      * Get the service this gallery belongs to
      */
-    public function service()
+    public function Project()
     {
-        return $this->belongsTo(Service::class);
+        return $this->belongsTo(Project::class);
     }
 }

@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class ServiceType extends Model
+class MenuItem extends Model
 {
+
+    protected $table = 'service_types';
+
     use HasFactory;
 
     protected $fillable = [
+        'type',
         'name',
         'slug',
-        'icon',
-        'bg_image',
-        'subtitle',
-        'description',
         'status',
     ];
 
@@ -31,8 +31,8 @@ class ServiceType extends Model
         });
     }
 
-    public function services()
+    public function projects()
     {
-        return $this->hasMany(Service::class, 'type_id');
+        return $this->hasMany(Project::class, 'menu_item_id');
     }
 }

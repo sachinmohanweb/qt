@@ -5,31 +5,34 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Service extends Model
+class Project extends Model
 {
+    protected $table = 'services';
+
     use HasFactory;
 
     protected $fillable = [
-        'type_id',
+        'menu_item_id',
         'name',
         'subtitle',
         'image',
+        'home_visibility',
         'status',
     ];
 
     /**
      * Get the service type
      */
-    public function serviceType()
+    public function MenuItem()
     {
-        return $this->belongsTo(ServiceType::class, 'type_id');
+        return $this->belongsTo(MenuItem::class, 'menu_item_id');
     }
 
     /**
      * Get the gallery images for this service
      */
-    public function galleries()
+    public function ProjectImages()
     {
-        return $this->hasMany(ServiceGallery::class);
+        return $this->hasMany(ProjectImage::class);
     }
 }

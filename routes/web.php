@@ -4,8 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ServiceTypeController;
@@ -54,17 +52,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/service-types/data', [DataTableController::class, 'serviceTypes'])->name('service-types.data');
     Route::get('/services/data', [DataTableController::class, 'services'])->name('services.data');
     Route::get('/service-galleries/data', [DataTableController::class, 'serviceGalleries'])->name('service-galleries.data');
-    Route::get('/products/data', [DataTableController::class, 'products'])->name('products.data');
-    Route::get('/feedback/data', [DataTableController::class, 'feedback'])->name('feedback.data');
+
     
     // Users Management
     Route::resource('users', UserController::class);
-    
-    // Products Management
-    Route::resource('products', ProductController::class);
-    
-    // Feedback Management
-    Route::resource('feedback', FeedbackController::class);
     
     // Testimonials Management
     Route::resource('testimonials', TestimonialController::class);
