@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
-@section('title', 'View Gallery Image')
+@section('title', 'View Project Image')
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Gallery Image Details</h1>
+        <h1>Project Image Details</h1>
         <div>
             <a href="{{ route('admin.service-galleries.edit', $serviceGallery) }}" class="btn btn-primary">
                 <i class="fas fa-edit"></i> Edit
@@ -19,7 +19,7 @@
         <div class="col-md-6">
             <div class="card mb-4">
                 <div class="card-body text-center">
-                    <img src="{{ asset('storage/service-galleries/' . $serviceGallery->image) }}" alt="Gallery Image" class="img-fluid rounded" style="max-height: 400px;">
+                    <img src="{{ asset('storage/project_images/' . $serviceGallery->image) }}" alt="Gallery Image" class="img-fluid rounded" style="max-height: 400px;">
                     
                     <div class="mt-3">
                         <span class="badge badge-{{ $serviceGallery->status == 1 ? 'success' : 'secondary' }}">
@@ -44,11 +44,11 @@
                             </tr>
                             <tr>
                                 <th>Service</th>
-                                <td>{{ $serviceGallery->service->name }}</td>
+                                <td>{{ $serviceGallery->Project->name }}</td>
                             </tr>
                             <tr>
                                 <th>Service Type</th>
-                                <td>{{ $serviceGallery->service->serviceType->name }}</td>
+                                <td>{{ $serviceGallery->Project->MenuItem->name }}</td>
                             </tr>
                             <tr>
                                 <th>Status</th>
@@ -74,17 +74,17 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
-                                    @if($serviceGallery->service->image)
-                                        <img src="{{ asset('storage/services/' . $serviceGallery->service->image) }}" alt="{{ $serviceGallery->service->name }}" style="height: 50px; width: 50px; object-fit: cover; border-radius: 4px;" class="me-3">
+                                    @if($serviceGallery->Project->image)
+                                        <img src="{{ asset('storage/projects/' . $serviceGallery->Project->image) }}" alt="{{ $serviceGallery->Project->name }}" style="height: 50px; width: 50px; object-fit: cover; border-radius: 4px;" class="me-3">
                                     @endif
                                     <div>
-                                        <h6 class="mb-1">{{ $serviceGallery->service->name }}</h6>
-                                        <small class="text-muted">{{ $serviceGallery->service->serviceType->name }}</small>
+                                        <h6 class="mb-1">{{ $serviceGallery->Project->name }}</h6>
+                                        <small class="text-muted">{{ $serviceGallery->Project->MenuItem->name }}</small>
                                     </div>
                                 </div>
                                 <div class="mt-2">
-                                    <a href="{{ route('admin.services.show', $serviceGallery->service) }}" class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-eye"></i> View Service
+                                    <a href="{{ route('admin.services.show', $serviceGallery->Project) }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i> View Project
                                     </a>
                                 </div>
                             </div>

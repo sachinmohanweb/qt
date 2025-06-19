@@ -35,22 +35,23 @@ class ServiceGalleryController extends Controller
      */
     public function store(Request $request)
     {
+
         $validated = $request->validate([
-            'project_id' => 'required|exists:projects,id',
+            'project_id' => 'required|exists:services,id',
             'status' => 'required|in:1,2',
             'images' => 'required|array|min:1',
             'images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $uploadedCount = 0;
-        $service = Service::find($validated['service_id']);
+        $project = Project::find($validated['project_id']);
 
         foreach ($request->file('images') as $image) {
             $imageName = 'gallery-' . time() . '-' . uniqid() . '.' . $image->extension();
             $image->storeAs('project_images', $imageName, 'public');
             
             ProjectImage::create([
-                'service_id' => $validated['service_id'],
+                'project_id' => $validated['project_id'],
                 'status' => $validated['status'],
                 'image' => $imageName,
             ]);
@@ -61,7 +62,7 @@ class ServiceGalleryController extends Controller
         ActivityLog::create([
             'user_id' => Auth::id(),
             'action' => 'create',
-            'description' => "Added {$uploadedCount} gallery images for service: " . $service->name,
+            'description' => "Added {$uploadedCount} gallery images for project: " . $project->name,
             'ip_address' => $request->ip()
         ]);
 
@@ -101,7 +102,7 @@ class ServiceGalleryController extends Controller
 
         // Update service and status
         $serviceGallery->update([
-            'service_id' => $validated['service_id'],
+            'project_id' => $validated['project_id'],
             'status' => $validated['status'],
         ]);
 
@@ -126,7 +127,7 @@ class ServiceGalleryController extends Controller
                 $image->storeAs('project_images', $additionalImageName, 'public');
                 
                 ServiceGallery::create([
-                    'service_id' => $validated['service_id'],
+                    'project_id' => $validated['project_id'],
                     'status' => $validated['status'],
                     'image' => $additionalImageName,
                 ]);
@@ -136,7 +137,7 @@ class ServiceGalleryController extends Controller
         ActivityLog::create([
             'user_id' => Auth::id(),
             'action' => 'update',
-            'description' => 'Updated gallery image for service: ' . $serviceGallery->service->name,
+            'description' => 'Updated gallery image for project: ' . $serviceGallery->Project->name,
             'ip_address' => $request->ip()
         ]);
 
@@ -157,7 +158,7 @@ class ServiceGalleryController extends Controller
         ActivityLog::create([
             'user_id' => Auth::id(),
             'action' => 'delete',
-            'description' => 'Deleted gallery image for service: ' . $serviceGallery->service->name,
+            'description' => 'Deleted gallery image for project: ' . $serviceGallery->Project->name,
             'ip_address' => $request->ip()
         ]);
 
@@ -179,7 +180,7 @@ class ServiceGalleryController extends Controller
         ActivityLog::create([
             'user_id' => Auth::id(),
             'action' => 'update',
-            'description' => 'Toggled status for gallery image of service: ' . $serviceGallery->service->name,
+            'description' => 'Toggled status for gallery image of Project: ' . $serviceGallery->Project->name,
             'ip_address' => $request->ip()
         ]);
 

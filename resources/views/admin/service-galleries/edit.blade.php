@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Gallery Image')
+@section('title', 'Edit Project Image')
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Edit Gallery Image</h1>
+        <h1>Edit Project Image</h1>
         <a href="{{ route('admin.service-galleries.index') }}" class="btn btn-outline-primary">
             <i class="fas fa-arrow-left"></i> Back to List
         </a>
@@ -19,16 +19,17 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label for="service_id" class="form-label">Service</label>
-                            <select class="form-select @error('service_id') is-invalid @enderror" id="service_id" name="service_id" required>
-                                <option value="">Select Service</option>
+                            <label for="service_id" class="form-label">Project</label>
+                            <select class="form-select @error('project_id') is-invalid @enderror" id="project_id" 
+                            name="project_id" required>
+                                <option value="">Select Project</option>
                                 @foreach($services as $service)
-                                    <option value="{{ $service->id }}" {{ old('service_id', $serviceGallery->service_id) == $service->id ? 'selected' : '' }}>
-                                        {{ $service->name }} ({{ $service->serviceType->name }})
+                                    <option value="{{ $service->id }}" {{ old('project_id', $serviceGallery->project_id) == $service->id ? 'selected' : '' }}>
+                                        {{ $service->name }} ({{ $service->MenuItem->name }})
                                     </option>
                                 @endforeach
                             </select>
-                            @error('service_id')
+                            @error('project_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -56,7 +57,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="card">
-                                        <img src="{{ asset('storage/service-galleries/' . $serviceGallery->image) }}" alt="Current Image" class="card-img-top" style="height: 150px; object-fit: cover;">
+                                        <img src="{{ asset('storage/project_images/' . $serviceGallery->image) }}" alt="Current Image" class="card-img-top" style="height: 150px; object-fit: cover;">
                                         <div class="card-body p-2">
                                             <small class="text-muted">Current Image</small>
                                         </div>

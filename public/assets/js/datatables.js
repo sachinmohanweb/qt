@@ -290,13 +290,13 @@ $(document).ready(function() {
                     orderable: false, 
                     searchable: false,
                     render: function(data) {
-                        return `<img src="/storage/service-galleries/${data}" alt="Gallery Image" style="height: 40px; width: 40px; object-fit: cover; border-radius: 4px;">`;
+                        return `<img src="/storage/project_images/${data}" alt="Gallery Image" style="height: 40px; width: 40px; object-fit: cover; border-radius: 4px;">`;
                     }
                 },
-                { data: 'service_name', name: 'service.name' },
+                { data: 'service_name', name: 'Project.name' },
                 { 
                     data: 'service_type', 
-                    name: 'service.serviceType.name',
+                    name: 'Project.MenuItem.name',
                     render: function(data) {
                         return `<span class="badge badge-primary">${data}</span>`;
                     }

@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
-@section('title', 'Add Gallery Images')
+@section('title', 'Add Project Images')
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Add Gallery Images</h1>
+        <h1>Add Project Images</h1>
         <a href="{{ route('admin.service-galleries.index') }}" class="btn btn-outline-primary">
             <i class="fas fa-arrow-left"></i> Back to List
         </a>
@@ -18,16 +18,17 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label for="service_id" class="form-label">Service</label>
-                            <select class="form-select @error('service_id') is-invalid @enderror" id="service_id" name="service_id" required>
-                                <option value="">Select Service</option>
+                            <label for="service_id" class="form-label">Project</label>
+                            <select class="form-select @error('project_id') is-invalid @enderror" id="project_id" 
+                            name="project_id" required>
+                                <option value="">Select Project</option>
                                 @foreach($services as $service)
-                                    <option value="{{ $service->id }}" {{ old('service_id', request('service_id')) == $service->id ? 'selected' : '' }}>
-                                        {{ $service->name }} ({{ $service->serviceType->name }})
+                                    <option value="{{ $service->id }}" {{ old('project_id', request('service_id')) == $service->id ? 'selected' : '' }}>
+                                        {{ $service->name }} ({{ $service->MenuItem->name }})
                                     </option>
                                 @endforeach
                             </select>
-                            @error('service_id')
+                            @error('project_id')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
@@ -48,7 +49,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="images" class="form-label">Gallery Images</label>
+                    <label for="images" class="form-label">Project Images</label>
                     <input type="file" class="form-control @error('images') is-invalid @enderror @error('images.*') is-invalid @enderror" id="images" name="images[]" accept="image/*" multiple required>
                     @error('images')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -65,7 +66,7 @@
                 
                 <div class="form-group mt-4 mb-0">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Save Gallery Images
+                        <i class="fas fa-save"></i> Save Project Images
                     </button>
                 </div>
             </form>

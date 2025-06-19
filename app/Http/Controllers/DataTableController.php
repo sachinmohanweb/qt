@@ -163,20 +163,20 @@ class DataTableController extends Controller
      */
     public function serviceGalleries(Request $request)
     {
-        $query = ServiceGallery::with(['service', 'service.serviceType']);
+        $query = ProjectImage::with(['Project', 'Project.MenuItem']);
 
         if ($request->has('type_filter') && $request->type_filter != '') {
-            $query->whereHas('service', function ($q) use ($request) {
-                $q->where('type_id', $request->type_filter);
+            $query->whereHas('Project', function ($q) use ($request) {
+                $q->where('project_id', $request->type_filter);
             });
         }
 
         return DataTables::of($query)
             ->addColumn('service_name', function ($gallery) {
-                return $gallery->service->name;
+                return $gallery->Project->name;
             })
             ->addColumn('service_type', function ($gallery) {
-                return $gallery->service->serviceType->name;
+                return $gallery->Project->MenuItem->name;
             })
             ->addColumn('actions', function ($gallery) {
                 $actions = '<div class="btn-group">';
