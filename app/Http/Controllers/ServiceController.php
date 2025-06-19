@@ -145,14 +145,14 @@ class ServiceController extends Controller
     public function toggleHomeVisibility(Request $request, Project $service)
     {
 
-        $blog->update([
-            'home_visibility' => $blog->home_visibility == 1 ? 2 : 1
+        $service->update([
+            'home_visibility' => $service->home_visibility == 1 ? 2 : 1
         ]);
 
         ActivityLog::create([
             'user_id' => Auth::id(),
             'action' => 'update',
-            'description' => 'Toggled home visibility for project: ' . $blog->name,
+            'description' => 'Toggled home visibility for project: ' . $service->name,
             'ip_address' => $request->ip()
         ]);
 
