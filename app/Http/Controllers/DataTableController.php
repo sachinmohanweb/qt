@@ -194,21 +194,19 @@ class DataTableController extends Controller
     }
 
     /**
-     * Products DataTable
+     * Video Item DataTable
      */
-    public function products(Request $request)
+    public function VideoItem(Request $request)
     {
-        $query = Product::query();
+        $query = VideoItem::orderBy('created_at','desc');
 
         return DataTables::of($query)
-            ->addColumn('formatted_price', function ($product) {
-                return '$' . number_format($product->price, 2);
-            })
-            ->addColumn('actions', function ($product) {
+           
+            ->addColumn('actions', function ($gallery) {
                 $actions = '<div class="btn-group">';
-                $actions .= '<a href="' . route('admin.products.show', $product) . '" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>';
-                $actions .= '<a href="' . route('admin.products.edit', $product) . '" class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></a>';
-                $actions .= '<form action="' . route('admin.products.destroy', $product) . '" method="POST" class="d-inline">';
+                $actions .= '<a href="' . route('admin.service-galleries.show', $gallery) . '" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>';
+                $actions .= '<a href="' . route('admin.service-galleries.edit', $gallery) . '" class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></a>';
+                $actions .= '<form action="' . route('admin.service-galleries.destroy', $gallery) . '" method="POST" class="d-inline">';
                 $actions .= csrf_field() . method_field('DELETE');
                 $actions .= '<button type="submit" class="btn btn-sm btn-outline-danger delete-confirm"><i class="fas fa-trash"></i></button>';
                 $actions .= '</form>';
@@ -219,29 +217,5 @@ class DataTableController extends Controller
             ->make(true);
     }
 
-    /**
-     * Feedback DataTable
-     */
-    public function feedback(Request $request)
-    {
-        $query = Feedback::query();
-
-        return DataTables::of($query)
-            ->addColumn('actions', function ($feedback) {
-                $actions = '<div class="btn-group">';
-                $actions .= '<a href="' . route('admin.feedback.show', $feedback) . '" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>';
-                $actions .= '<a href="' . route('admin.feedback.edit', $feedback) . '" class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></a>';
-                $actions .= '<form action="' . route('admin.feedback.destroy', $feedback) . '" method="POST" class="d-inline">';
-                $actions .= csrf_field() . method_field('DELETE');
-                $actions .= '<button type="submit" class="btn btn-sm btn-outline-danger delete-confirm"><i class="fas fa-trash"></i></button>';
-                $actions .= '</form>';
-                $actions .= '</div>';
-                return $actions;
-            })
-            ->editColumn('created_at', function ($feedback) {
-                return $feedback->created_at->format('M d, Y');
-            })
-            ->rawColumns(['actions'])
-            ->make(true);
-    }
+    
 }

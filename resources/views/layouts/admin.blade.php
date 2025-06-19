@@ -55,7 +55,7 @@
                     <i class="fas fa-images"></i>
                     <span>Project Images</span>
                 </a>
-                <a href="{{ route('admin.service-galleries.index') }}" class="menu-item {{ request()->routeIs('admin.service-galleries.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.video-items.index') }}" class="menu-item {{ request()->routeIs('admin.video-items.*') ? 'active' : '' }}">
                     <i class="fas fa-images"></i>
                     <span>Video Items</span>
                 </a>

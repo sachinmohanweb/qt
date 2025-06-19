@@ -9,6 +9,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ServiceTypeController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ServiceGalleryController;
+use App\Http\Controllers\VideoItemsController;
 use App\Http\Controllers\DataTableController;
 use App\Http\Controllers\WebsiteController;
 
@@ -51,7 +52,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('/blogs/data', [DataTableController::class, 'blogs'])->name('blogs.data');
     Route::get('/service-types/data', [DataTableController::class, 'serviceTypes'])->name('service-types.data');
     Route::get('/services/data', [DataTableController::class, 'services'])->name('services.data');
-    Route::get('/service-galleries/data', [DataTableController::class, 'serviceGalleries'])->name('service-galleries.data');
+    Route::get('/service-galleries/data',[DataTableController::class,'serviceGalleries'])->name('service-galleries.data');
+    Route::get('/video-items/data',[DataTableController::class,'VideoItems'])->name('video-items.data');
 
     
     // Users Management
@@ -60,23 +62,37 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     // Testimonials Management
     Route::resource('testimonials', TestimonialController::class);
     Route::post('testimonials/{testimonial}/toggle-home-visibility', [TestimonialController::class, 'toggleHomeVisibility'])->name('testimonials.toggle-home-visibility');
-    Route::post('testimonials/{testimonial}/toggle-status', [TestimonialController::class, 'toggleStatus'])->name('testimonials.toggle-status');
+    Route::post('testimonials/{testimonial}/toggle-status', [TestimonialController::class, 'toggleStatus'])
+        ->name('testimonials.toggle-status');
     
     // Blogs Management
     Route::resource('blogs', BlogController::class);
-    Route::post('blogs/{blog}/toggle-home-visibility', [BlogController::class, 'toggleHomeVisibility'])->name('blogs.toggle-home-visibility');
+    Route::post('blogs/{blog}/toggle-home-visibility', [BlogController::class, 'toggleHomeVisibility'])
+        ->name('blogs.toggle-home-visibility');
     Route::post('blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggle-status');
     
     // Service Types Management
     Route::resource('service-types', ServiceTypeController::class);
-    Route::post('service-types/{serviceType}/toggle-status', [ServiceTypeController::class, 'toggleStatus'])->name('service-types.toggle-status');
+    Route::post('service-types/{serviceType}/toggle-status', [ServiceTypeController::class, 'toggleStatus'])
+        ->name('service-types.toggle-status');
     
     // Services Management
     Route::resource('services', ServiceController::class);
-    Route::post('services/{service}/toggle-status', [ServiceController::class, 'toggleStatus'])->name('services.toggle-status');
+    Route::post('services/{service}/toggle-home-visibility', [ServiceController::class, 'toggleHomeVisibility'])
+        ->name('services.toggle-home-visibility');
+    Route::post('services/{service}/toggle-status', [ServiceController::class, 'toggleStatus'])
+        ->name('services.toggle-status');
     
     // Service Galleries Management
     Route::resource('service-galleries', ServiceGalleryController::class);
-    Route::post('service-galleries/{serviceGallery}/toggle-status', [ServiceGalleryController::class, 'toggleStatus'])->name('service-galleries.toggle-status');
+    Route::post('service-galleries/{serviceGallery}/toggle-status', [ServiceGalleryController::class, 'toggleStatus'])
+        ->name('service-galleries.toggle-status');
+
+    // Video Items Management
+    Route::resource('video-items', VideoItemsController::class);
+    Route::post('video-items/{videoitem}/toggle-home-visibility', [VideoItemsController::class, 'toggleHomeVisibility'])
+        ->name('video-items.toggle-home-visibility');
+    Route::post('video-items/{VideoItems}/toggle-status', [VideoItemsController::class, 'toggleStatus'])
+        ->name('video-items.toggle-status');
 });
 

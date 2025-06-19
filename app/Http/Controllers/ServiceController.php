@@ -142,6 +142,23 @@ class ServiceController extends Controller
             ->with('success', 'Service deleted successfully');
     }
 
+    public function toggleHomeVisibility(Request $request, Project $blog)
+    {
+        $blog->update([
+            'home_visibility' => $blog->home_visibility == 1 ? 2 : 1
+        ]);
+
+        ActivityLog::create([
+            'user_id' => Auth::id(),
+            'action' => 'update',
+            'description' => 'Toggled home visibility for project: ' . $blog->name,
+            'ip_address' => $request->ip()
+        ]);
+
+        return response()->json(['success' => true]);
+    }
+
+
     /**
      * Toggle status
      */

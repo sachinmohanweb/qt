@@ -247,7 +247,7 @@ $(document).ready(function() {
                     orderable: false,
                     render: function(data, type, row) {
                         const isActive = data == 1 ? 'active' : '';
-                        return `<div class="toggle-switch ${isActive}" onclick="toggleStatus('/admin/services/${row.id}/toggle-status', this)"><div class="toggle-slider"></div></div>`;
+                        return `<div class="toggle-switch ${isActive}" onclick="toggleStatus('/admin/services/${row.id}/toggle-home-visibility', this)"><div class="toggle-slider"></div></div>`;
                     }
                 },
                 { 
@@ -319,6 +319,66 @@ $(document).ready(function() {
 
         $('#type-filter').on('change', function() {
             $('#service-galleries-table').DataTable().ajax.reload();
+        });
+    }
+
+    // Video DataTable
+    if ($('#video-items-table').length) {
+        $('#video-items-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: '/admin/video-items/data',
+                data: function(d) {
+                    d.type_filter = $('#type-filter').val();
+                }
+            },
+            columns: [
+                { data: 'id', name: 'id' },
+                { 
+                    data: 'thumb', 
+                    name: 'thumb', 
+                    orderable: false, 
+                    searchable: false,
+                    render: function(data) {
+                        return `<img src="/storage/video-items/${data}" alt="Gallery Image" style="height: 40px; width: 40px; object-fit: cover; border-radius: 4px;">`;
+                    }
+                },
+                { data: 'type', name: 'type' },
+                { 
+                    data: 'service_type', 
+                    name: 'Project.MenuItem.name',
+                    render: function(data) {
+                        return `<span class="badge badge-primary">${data}</span>`;
+                    }
+                },
+                { 
+                    data: 'home_visibility', 
+                    name: 'home_visibility',
+                    orderable: false,
+                    render: function(data, type, row) {
+                        const isActive = data == 1 ? 'active' : '';
+                        return `<div class="toggle-switch ${isActive}" onclick="toggleStatus('/admin/video-items/${row.id}/toggle-home-visibility', this)"><div class="toggle-slider"></div></div>`;
+                    }
+                },
+                { 
+                    data: 'status', 
+                    name: 'status',
+                    orderable: false,
+                    render: function(data, type, row) {
+                        const isActive = data == 1 ? 'active' : '';
+                        return `<div class="toggle-switch ${isActive}" onclick="toggleStatus('/admin/video-items/${row.id}/toggle-status', this)"><div class="toggle-slider"></div></div>`;
+                    }
+                },
+                { data: 'actions', name: 'actions', orderable: false, searchable: false }
+            ],
+            order: [[0, 'desc']],
+            pageLength: 10,
+            responsive: true
+        });
+
+        $('#type-filter').on('change', function() {
+            $('#video-items-table').DataTable().ajax.reload();
         });
     }
 
