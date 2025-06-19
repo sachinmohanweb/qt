@@ -1,18 +1,18 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Project Image')
+@section('title', 'Edit Video')
 
 @section('content')
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Edit Project Image</h1>
-        <a href="{{ route('admin.service-galleries.index') }}" class="btn btn-outline-primary">
+        <a href="{{ route('admin.video-items.index') }}" class="btn btn-outline-primary">
             <i class="fas fa-arrow-left"></i> Back to List
         </a>
     </div>
     
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('admin.service-galleries.update', $serviceGallery) }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <form action="{{ route('admin.video-items.update',  ['video_item' => $serviceGallery->id]) }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                 @csrf
                 @method('PUT')
                 
@@ -21,7 +21,7 @@
                     <select class="form-select @error('type') is-invalid @enderror" id="type" 
                     name="type" required>
                         <option value="">Select Type</option>
-                            <option value="link" {{ old('type') == 'link' ? 'selected' : '' }}>Link</option>
+                            <option value="1" selected>Link</option>
                             <!-- <option value="link">File</option> -->
                     </select>
                     @error('type')
@@ -33,8 +33,8 @@
                 <div class="form-group">
                     <label for="status" class="form-label">Home Visibility</label>
                     <select class="form-select @error('home_visibility') is-invalid @enderror" id="home_visibility" name="home_visibility" required>
-                        <option value="1" {{ old('home_visibility') == '1' ? 'selected' : '' }}>Show</option>
-                        <option value="2" {{ old('home_visibility') == '2' ? 'selected' : '' }}>Hide</option>
+                        <option value="1" {{ old('home_visibility', $serviceGallery->home_visibility) == '1' ? 'selected' : '' }}>Show</option>
+                        <option value="2" {{ old('home_visibility', $serviceGallery->home_visibility) == '2' ? 'selected' : '' }}>Hide</option>
                     </select>
                     @error('home_visibility')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -44,8 +44,8 @@
                 <div class="form-group">
                     <label for="status" class="form-label">Status</label>
                     <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
-                        <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
-                        <option value="2" {{ old('status') == '2' ? 'selected' : '' }}>Inactive</option>
+                        <option value="1" {{ old('status', $serviceGallery->status) == '1' ? 'selected' : '' }}>Active</option>
+                        <option value="2" {{ old('status', $serviceGallery->status) == '2' ? 'selected' : '' }}>Inactive</option>
                     </select>
                     @error('status')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -54,14 +54,21 @@
                 
                 <div class="form-group">
                         <label for="name" class="form-label">Link</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="link_path" name="link_path" value="{{ old('link_path') }}" required>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="link_path" name="link_path" value="{{ old('link_path', $serviceGallery->link_path) }}" required>
                         @error('link_path')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                 </div>
                 <div class="form-group">
                     <label for="images" class="form-label">Video Thumb</label>
-                    <input type="file" class="form-control @error('thumb') is-invalid @enderror @error('thumb.*') is-invalid @enderror" id="thumb" name="thumb" accept="image/*" required>
+
+                    @if($serviceGallery->thumb)
+                        <div class="mb-2">
+                            <img src="{{ asset('storage/video_items/' . $serviceGallery->thumb) }}" alt="video" 
+                            class="img-thumbnail" style="max-height: 150px;">
+                        </div>
+                    @endif      
+                    <input type="file" class="form-control @error('thumb') is-invalid @enderror @error('thumb.*') is-invalid @enderror" id="thumb" name="thumb" accept="image/*" >
                     @error('thumb')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror

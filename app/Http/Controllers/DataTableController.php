@@ -196,7 +196,7 @@ class DataTableController extends Controller
     /**
      * Video Item DataTable
      */
-    public function VideoItem(Request $request)
+    public function VideoItems(Request $request)
     {
         $query = VideoItem::orderBy('created_at','desc');
 
@@ -204,9 +204,10 @@ class DataTableController extends Controller
            
             ->addColumn('actions', function ($gallery) {
                 $actions = '<div class="btn-group">';
-                $actions .= '<a href="' . route('admin.service-galleries.show', $gallery) . '" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>';
-                $actions .= '<a href="' . route('admin.service-galleries.edit', $gallery) . '" class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></a>';
-                $actions .= '<form action="' . route('admin.service-galleries.destroy', $gallery) . '" method="POST" class="d-inline">';
+                $actions .= '<a href="' . $gallery->link_path . '" target="_blank" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>';
+
+                $actions .= '<a href="' . route('admin.video-items.edit', $gallery) . '" class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></a>';
+                $actions .= '<form action="' . route('admin.video-items.destroy', $gallery) . '" method="POST" class="d-inline">';
                 $actions .= csrf_field() . method_field('DELETE');
                 $actions .= '<button type="submit" class="btn btn-sm btn-outline-danger delete-confirm"><i class="fas fa-trash"></i></button>';
                 $actions .= '</form>';

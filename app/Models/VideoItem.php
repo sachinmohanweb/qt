@@ -12,16 +12,11 @@ class VideoItem extends Model
     use HasFactory;
 
     protected $fillable = [
-        'project_id',
-        'image',
+        'type',
+        'link_path',
+        'thumb',
+        'home_visibility',
         'status',
     ];
-
-    /**
-     * Get the service this gallery belongs to
-     */
-    public function Project()
-    {
-        return $this->belongsTo(Project::class);
-    }
+   
 }

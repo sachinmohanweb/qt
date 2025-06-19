@@ -15,7 +15,7 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-logo">
-                 <img src="https://www.qot.co.in/wp-content/uploads/2025/01/LOGO-QOT-01-e1736444536786-300x217.png">
+                 <img src="/web_img/logo/LOGO-QOT-01-e1736444536786-300x217.png">
                 </div>
                 <div class="sidebar-logo">Admin Panel</div>
             </div>

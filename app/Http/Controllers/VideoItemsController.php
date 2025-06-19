@@ -35,16 +35,15 @@ class VideoItemsController extends Controller
     {
 
         $validated = $request->validate([
-            'type' => 'required|exists:services,id',
+            'type' => 'required',
             'link_path' => 'required|string',
-            'thumb' => 'required|array|min:1',
             'thumb.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'home_visibility' => 'required|in:1,2',
             'status' => 'required|in:1,2',
         ]);
 
         if ($request->hasFile('thumb')) {
-            $imageName = Str::slug($validated['link_path']) . '-' . time() . '.' . $request->thumb->extension();
+            $imageName = 'video-' . time() . '.' . $request->thumb->extension();
             $request->thumb->storeAs('video_items', $imageName, 'public');
             $validated['thumb'] = $imageName;
         }
@@ -74,38 +73,38 @@ class VideoItemsController extends Controller
     /**
      * Show the form for editing the specified service gallery.
      */
-    public function edit(VideoItem $serviceGallery)
+    public function edit(VideoItem $video_item)
     {
-        return view('admin.video_items.edit', compact('serviceGallery'));
+        return view('admin.video_items.edit', ['serviceGallery' => $video_item]);
     }
 
     /**
      * Update the specified service gallery in storage.
      */
-    public function update(Request $request, VideoItem $serviceGallery)
+    public function update(Request $request,  $serviceGallery)
     {
+        $serviceGallery = VideoItem::find($serviceGallery);
+
         $validated = $request->validate([
-            'type' => 'required|exists:services,id',
+            'type' => 'required',
             'link_path' => 'required|string',
-            'thumb' => 'required|array|min:1',
-            'thumb.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'thumb' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'home_visibility' => 'required|in:1,2',
             'status' => 'required|in:1,2',
         ]);
 
         if ($request->hasFile('thumb')) {
             // Delete old thumb if it exists
-            if ($service->thumb && Storage::disk('public')->exists('video_items/' . $serviceGallery->thumb)) {
+            if ($serviceGallery->thumb && Storage::disk('public')->exists('video_items/' . $serviceGallery->thumb)) {
                 Storage::disk('public')->delete('video_items/' . $serviceGallery->thumb);
             }
             
-            $thumbName = Str::slug($validated['name']) . '-' . time() . '.' . $request->thumb->extension();
+            $thumbName = 'video-' . time() . '.' . $request->thumb->extension();
             $request->thumb->storeAs('video_items', $thumbName, 'public');
             $validated['thumb'] = $thumbName;
         }
 
         $serviceGallery->update($validated);
-
         ActivityLog::create([
             'user_id' => Auth::id(),
             'action' => 'update',
@@ -120,10 +119,12 @@ class VideoItemsController extends Controller
     /**
      * Remove the specified service gallery from storage.
      */
-    public function destroy(Request $request, VideoItem $serviceGallery)
+    public function destroy(Request $request, $service)
     {
+        $serviceGallery = VideoItem::find($service);
+
         // Delete gallery image if it exists
-        if ($serviceGallery->thumb && Storage::disk('public')->exists('video_items/' . $serviceGallery->image)) {
+        if ($serviceGallery->thumb && Storage::disk('public')->exists('video_items/' . $serviceGallery->thumb)) {
             Storage::disk('public')->delete('video_items/' . $serviceGallery->thumb);
         }
 
@@ -140,10 +141,12 @@ class VideoItemsController extends Controller
             ->with('success', 'Video deleted successfully');
     }
 
-    public function toggleHomeVisibility(Request $request, VideoItem $blog)
+    public function toggleHomeVisibility(Request $request,  $blog)
     {
-        $blog->update([
-            'home_visibility' => $blog->home_visibility == 1 ? 2 : 1
+        $serviceGallery = VideoItem::find($blog);
+
+        $serviceGallery->update([
+            'home_visibility' => $serviceGallery->home_visibility == 1 ? 2 : 1
         ]);
 
         ActivityLog::create([
@@ -159,8 +162,10 @@ class VideoItemsController extends Controller
     /**
      * Toggle status
      */
-    public function toggleStatus(Request $request, VideoItem $serviceGallery)
+    public function toggleStatus(Request $request,  $blog)
     {
+        $serviceGallery = VideoItem::find($blog);
+
         $serviceGallery->update([
             'status' => $serviceGallery->status == 1 ? 2 : 1
         ]);

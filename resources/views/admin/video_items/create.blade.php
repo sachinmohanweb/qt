@@ -20,7 +20,7 @@
                     <select class="form-select @error('type') is-invalid @enderror" id="type" 
                     name="type" required>
                         <option value="">Select Type</option>
-                            <option value="link" {{ old('type') == 'link' ? 'selected' : '' }}>Link</option>
+                            <option value="1" {{ old('type') == '1' ? 'selected' : '' }}>Link</option>
                             <!-- <option value="link">File</option> -->
                     </select>
                     @error('type')

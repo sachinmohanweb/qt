@@ -330,7 +330,6 @@ $(document).ready(function() {
             ajax: {
                 url: '/admin/video-items/data',
                 data: function(d) {
-                    d.type_filter = $('#type-filter').val();
                 }
             },
             columns: [
@@ -341,17 +340,11 @@ $(document).ready(function() {
                     orderable: false, 
                     searchable: false,
                     render: function(data) {
-                        return `<img src="/storage/video-items/${data}" alt="Gallery Image" style="height: 40px; width: 40px; object-fit: cover; border-radius: 4px;">`;
+                        return `<img src="/storage/video_items/${data}" alt="Gallery Image" style="height: 100px; width: 100x; object-fit: cover; border-radius: 4px;">`;
                     }
                 },
                 { data: 'type', name: 'type' },
-                { 
-                    data: 'service_type', 
-                    name: 'Project.MenuItem.name',
-                    render: function(data) {
-                        return `<span class="badge badge-primary">${data}</span>`;
-                    }
-                },
+                
                 { 
                     data: 'home_visibility', 
                     name: 'home_visibility',
