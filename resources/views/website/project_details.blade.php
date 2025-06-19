@@ -47,10 +47,10 @@
 
               <!-- Image Items with Fancybox -->
               
-              @foreach($service_gallery->galleries as $item)
+              @foreach($service_gallery->ProjectImages as $item)
                 <div class="grid-item">
-                  <a data-fancybox="gallery" href="{{ asset($item->image ? 'storage/service-galleries/' . $item->image : 'web_img/banner1.jpg') }}">
-                    <img src="{{ asset($item->image ? 'storage/service-galleries/' . $item->image : 'web_img/green-house/1.jpg') }}" alt={{$service_gallery->name}}" />
+                  <a data-fancybox="gallery" href="{{ asset($item->image ? 'storage/project_images/' . $item->image : 'web_img/banner1.jpg') }}">
+                    <img src="{{ asset($item->image ? 'storage/project_images/' . $item->image : 'web_img/green-house/1.jpg') }}" alt={{$service_gallery->name}}" />
                   </a>
                 </div>
               @endforeach

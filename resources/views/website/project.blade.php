@@ -47,31 +47,49 @@ use Illuminate\Support\Str;
     <section>
       <div class="portfolio qot-portfolio">
         <div class="container">
+          {{-- Tab buttons --}}
           <div class="project-filter-nav">
               @foreach($group_services as $index => $type)
-
-                  <button class="filter-btn {{ $index === 0 ? 'active' : '' }}" data-filter="{{ Str::slug($type->name) }}">
-                      {{ $type->name }}
+                  <button class="filter-btn {{ $index === 0 ? 'active' : '' }}" data-filter="{{ Str::slug($type['tab_name']) }}">
+                      {{ $type['tab_name'] }}
                   </button>
               @endforeach
           </div>
 
+          {{-- Grid items --}}
           <div class="project-grid">
-              @foreach($group_services as $key=>$type)
-                  @foreach($type->services as $service)
+              @foreach($group_services as $key => $type)
+                  @foreach($type['services'] as $item)
+                      @if($type['type'] == 1)
+                        <div class="project-item {{ Str::slug($type['tab_name']) }} {{ $key === 0 ? 'show' : '' }}"
+                           style="background-image: url('{{ asset($item->image ? 'storage/projects/' . $item->image : 'web_img/banner1.jpg') }}')">
+                           <?php
+                              $slug = Str::slug($item->name);
+                            ?>
 
-                      <div class="project-item {{ Str::slug($type->name) }} {{ $key === 0 ? 'show' : '' }}" style="background: url('{{ asset($service->image ? 'storage/services/' . $service->image : 'web_img/banner1.jpg') }}');">
-                          <div class="project-hover-content">
-                              <h3>{{ $service->name }}</h3>
-                              <?php
-                                  $slug = Str::slug($service->name);
-                              ?>
-                              <a href="/project_details/{{$service->id}}/{{$slug}}">
+                            <div class="project-hover-content">
+                                <h3>{{ $item->name }}</h3>
+                                <p>{{ $item->subtitle ?? 'Description' }}</p>
+                              <a href="/project_details/{{$item->id}}/{{$slug}}">
                                 <span>View Project</span>
                                 <img src="web_img/right-arrow.png" alt="" />
                               </a>
-                          </div>
-                      </div>
+                            </div>
+                        </div>
+                      @else
+                        <div class="project-item {{ Str::slug($type['tab_name']) }} {{ $key === 0 ? 'show' : '' }}"
+                           style="background-image: url('{{ asset($item->thumb ? 'storage/video_items/' . $item->thumb : 'web_img/banner1.jpg') }}')"
+                           href="{{$item->link_path}}"
+                            data-fancybox
+                           >
+                            <div class="project-hover-content">
+                                <h3>Video </h3>
+                            </div>
+                              <div class="play-button">
+                                  <img src="{{ asset('web_img/play.png') }}" alt="Play Video">
+                              </div>
+                        </div>
+                      @endif
                   @endforeach
               @endforeach
           </div>

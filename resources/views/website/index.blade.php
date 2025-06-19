@@ -195,30 +195,39 @@
         <h2>Where Ideas Become Creations</h2>
         <div class="container">
 
+          {{-- Tab buttons --}}
           <div class="project-filter-nav">
               @foreach($group_services as $index => $type)
-
-                  <button class="filter-btn {{ $index === 0 ? 'active' : '' }}" data-filter="{{ Str::slug($type->name) }}">
-                      {{ $type->name }}
+                  <button class="filter-btn {{ $index === 0 ? 'active' : '' }}" data-filter="{{ Str::slug($type['tab_name']) }}">
+                      {{ $type['tab_name'] }}
                   </button>
               @endforeach
           </div>
 
+          {{-- Grid items --}}
           <div class="project-grid">
-              @foreach($group_services as $key=>$type)
-                  @foreach($type->services as $service)
+              @foreach($group_services as $key => $type)
+                  @foreach($type['services'] as $item)
+                      <div class="project-item {{ Str::slug($type['tab_name']) }} {{ $key === 0 ? 'show' : '' }}"
+                           style="background-image: url('{{ asset($item->image ? 'storage/projects/' . $item->image : 'web_img/banner1.jpg') }}')">
 
-                      <div class="project-item {{ Str::slug($type->name) }} {{ $key === 0 ? 'show' : '' }}" style="background: url('{{ asset($service->image ? 'storage/services/' . $service->image : 'web_img/banner1.jpg') }}');">
-                          <div class="project-hover-content">
-                              <h3>{{ $service->name }}</h3>
-                              <p>{{ $service->subtitle }}</p>
-                          </div>
+                          @if($type['type'] == 1)
+                            <div class="project-hover-content">
+                                <h3>{{ $item->name }}</h3>
+                                <p>{{ $item->subtitle ?? 'Description' }}</p>
+                            </div>
+                          @else
+                            <div class="project-hover-content">
+                                <h3>Video </h3>
+                            </div>
+                              <div class="play-button">
+                                  <img src="{{ asset('web_img/play.png') }}" alt="Play Video">
+                              </div>
+                          @endif
                       </div>
                   @endforeach
               @endforeach
           </div>
-
-
           <div
             class="qot-btn d-flex justify-content-center align-items-center mt-5"
           >
