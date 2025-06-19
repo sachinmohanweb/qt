@@ -19,7 +19,7 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label for="name" class="form-label">Service Name</label>
+                            <label for="name" class="form-label">Project Name</label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $service->name) }}" required>
                             @error('name')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -77,7 +77,7 @@
 
                         
                         <div class="form-group">
-                            <label for="image" class="form-label">Service Image</label>
+                            <label for="image" class="form-label">Project Image</label>
                             @if($service->image)
                                 <div class="mb-2">
                                     <img src="{{ asset('storage/projects/' . $service->image) }}" alt="{{ $service->name }}" class="img-thumbnail" style="max-height: 150px;">

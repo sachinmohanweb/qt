@@ -26,7 +26,7 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        $serviceTypes = MenuItem::where('status', 1)->get();
+        $serviceTypes = MenuItem::where('status', 1)->where('type',1)->get();
         return view('admin.services.create', compact('serviceTypes'));
     }
 
@@ -35,15 +35,15 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
+
         $validated = $request->validate([
-            'menu_item_id' => 'required|exists:menu_items,id',
+            'menu_item_id' => 'required|exists:service_types,id',
             'name' => 'required|string|max:255',
             'subtitle' => 'required|string|max:255',
             'status' => 'required|in:1,2',
             'home_visibility' => 'required|in:1,2',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
         if ($request->hasFile('image')) {
             $imageName = Str::slug($validated['name']) . '-' . time() . '.' . $request->image->extension();
             $request->image->storeAs('projects', $imageName, 'public');
@@ -58,7 +58,7 @@ class ServiceController extends Controller
             'description' => 'Created new service: ' . $service->name,
             'ip_address' => $request->ip()
         ]);
-
+        
         return redirect()->route('admin.services.index')
             ->with('success', 'Service created successfully');
     }
@@ -87,7 +87,7 @@ class ServiceController extends Controller
     public function update(Request $request, Project $service)
     {
         $validated = $request->validate([
-            'menu_item_id' => 'required|exists:services,id',
+            'menu_item_id' => 'required|exists:service_types,id',
             'name' => 'required|string|max:255',
             'subtitle' => 'required|string|max:255',
             'status' => 'required|in:1,2',
@@ -142,8 +142,9 @@ class ServiceController extends Controller
             ->with('success', 'Service deleted successfully');
     }
 
-    public function toggleHomeVisibility(Request $request, Project $blog)
+    public function toggleHomeVisibility(Request $request, Project $service)
     {
+
         $blog->update([
             'home_visibility' => $blog->home_visibility == 1 ? 2 : 1
         ]);
