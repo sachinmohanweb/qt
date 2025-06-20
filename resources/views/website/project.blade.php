@@ -69,7 +69,7 @@ use Illuminate\Support\Str;
 
                             <div class="project-hover-content">
                                 <h3>{{ $item->name }}</h3>
-                                <p>{{ $item->subtitle ?? 'Description' }}</p>
+                                <!-- <p>{{ $item->subtitle ?? 'Description' }}</p> -->
                               <a href="/project_details/{{$item->id}}/{{$slug}}">
                                 <span>View Project</span>
                                 <img src="web_img/right-arrow.png" alt="" />

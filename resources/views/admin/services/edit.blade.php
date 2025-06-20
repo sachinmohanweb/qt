@@ -28,7 +28,7 @@
                         <div class="form-group">
                             <label for="name" class="form-label">Sub Title</label>
                             <input type="text" class="form-control @error('subtitle') is-invalid @enderror" id="subtitle" 
-                            name="subtitle" value="{{ old('subtitle', $service->subtitle) }}" required>
+                            name="subtitle" value="{{ old('subtitle', $service->subtitle) }}" >
                             @error('subtitle')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

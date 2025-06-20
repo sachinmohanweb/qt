@@ -208,23 +208,36 @@
           <div class="project-grid">
               @foreach($group_services as $key => $type)
                   @foreach($type['services'] as $item)
-                      <div class="project-item {{ Str::slug($type['tab_name']) }} {{ $key === 0 ? 'show' : '' }}"
+                       @if($type['type'] == 1)
+                        <div class="project-item {{ Str::slug($type['tab_name']) }} {{ $key === 0 ? 'show' : '' }}"
                            style="background-image: url('{{ asset($item->image ? 'storage/projects/' . $item->image : 'web_img/banner1.jpg') }}')">
+                           <?php
+                              $slug = Str::slug($item->name);
+                            ?>
 
-                          @if($type['type'] == 1)
                             <div class="project-hover-content">
                                 <h3>{{ $item->name }}</h3>
-                                <p>{{ $item->subtitle ?? 'Description' }}</p>
+                                <!-- <p>{{ $item->subtitle ?? 'Description' }}</p> -->
+                              <a href="/project_details/{{$item->id}}/{{$slug}}">
+                                <span>View Project</span>
+                                <img src="web_img/right-arrow.png" alt="" />
+                              </a>
                             </div>
-                          @else
+                        </div>
+                      @else
+                        <div class="project-item {{ Str::slug($type['tab_name']) }} {{ $key === 0 ? 'show' : '' }}"
+                           style="background-image: url('{{ asset($item->thumb ? 'storage/video_items/' . $item->thumb : 'web_img/banner1.jpg') }}')"
+                           href="{{$item->link_path}}"
+                            data-fancybox
+                           >
                             <div class="project-hover-content">
                                 <h3>Video </h3>
                             </div>
                               <div class="play-button">
                                   <img src="{{ asset('web_img/play.png') }}" alt="Play Video">
                               </div>
-                          @endif
-                      </div>
+                        </div>
+                      @endif
                   @endforeach
               @endforeach
           </div>
