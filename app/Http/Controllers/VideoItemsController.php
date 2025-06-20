@@ -36,6 +36,7 @@ class VideoItemsController extends Controller
 
         $validated = $request->validate([
             'type' => 'required',
+            'title' => 'required|string',
             'link_path' => 'required|string',
             'thumb.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'home_visibility' => 'required|in:1,2',
@@ -87,6 +88,7 @@ class VideoItemsController extends Controller
 
         $validated = $request->validate([
             'type' => 'required',
+            'title' => 'required|string',
             'link_path' => 'required|string',
             'thumb' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'home_visibility' => 'required|in:1,2',

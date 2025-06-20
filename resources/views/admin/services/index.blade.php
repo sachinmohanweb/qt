@@ -1,3 +1,6 @@
+<?php
+use App\Models\MenuItem;
+?>
 @extends('layouts.admin')
 
 @section('title', 'Project Management')
@@ -23,7 +26,7 @@
                 <div class="d-flex gap-2">
                     <select id="type-filter" class="form-select form_select" style="width: 200px;">
                         <option value="">All Menu Items</option>
-                        @foreach(\App\Models\Menuitem::where('status', 1)->where('type',1)->get() as $type)
+                        @foreach(MenuItem::where('status', 1)->where('type',1)->get() as $type)
                             <option value="{{ $type->id }}">{{ $type->name }}</option>
                         @endforeach
                     </select>

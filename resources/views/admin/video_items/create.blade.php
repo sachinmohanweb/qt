@@ -50,10 +50,18 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+
+                <div class="form-group">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}" required>
+                        @error('title')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                </div>
                 
                 <div class="form-group">
                         <label for="name" class="form-label">Link</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="link_path" name="link_path" value="{{ old('link_path') }}" required>
+                        <input type="text" class="form-control @error('link_path') is-invalid @enderror" id="link_path" name="link_path" value="{{ old('link_path') }}" required>
                         @error('link_path')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

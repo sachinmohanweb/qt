@@ -231,7 +231,7 @@
                             data-fancybox
                            >
                             <div class="project-hover-content">
-                                <h3>Video </h3>
+                                <h3>{{$item->title}} </h3>
                             </div>
                               <div class="play-button">
                                   <img src="{{ asset('web_img/play.png') }}" alt="Play Video">

@@ -344,6 +344,7 @@ $(document).ready(function() {
                     }
                 },
                 { data: 'type', name: 'type' },
+                { data: 'title', name: 'title' },
                 
                 { 
                     data: 'home_visibility', 

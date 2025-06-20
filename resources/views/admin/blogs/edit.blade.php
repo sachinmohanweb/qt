@@ -130,6 +130,7 @@
 .ql-container {
     border: none;
     border-radius: 0 0 var(--radius-md) var(--radius-md);
+    height: 89%;
 }
 .ql-editor {
     min-height: 300px;

@@ -30,6 +30,7 @@
                             <th>#</th>
                             <th>Thumb</th>
                             <th>Type</th>
+                            <th>Title</th>
                             <th>Home visibility</th>
                             <th>Status</th>
                             <th>Actions</th>

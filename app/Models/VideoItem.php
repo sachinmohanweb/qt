@@ -13,6 +13,7 @@ class VideoItem extends Model
 
     protected $fillable = [
         'type',
+        'title',
         'link_path',
         'thumb',
         'home_visibility',
