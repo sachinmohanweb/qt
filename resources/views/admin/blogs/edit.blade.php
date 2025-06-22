@@ -39,11 +39,11 @@
                         <div class="form-group">
                             <label for="description" class="form-label">Description</label>
                             <div id="editor-container" style="height: 400px;">
-                                <div id="editor">{!! old('description', $blog->description) !!}</div>
+                                <div id="editor">{!! old('description', $blog->description ?? '') !!}</div>
                             </div>
                             <textarea class="form-control @error('description') is-invalid @enderror" 
-                            style="display: none !important;"
-                            id="description" name="description" required >{{ old('description', $blog->description) }}</textarea>
+                                style="display: none !important;"
+                                id="description" name="description" required>{{ old('description', $blog->description ?? '') }}</textarea>
                             @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -110,83 +110,251 @@
 @endsection
 
 @push('styles')
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <style>
+/* CKEditor Container Styling */
 #editor-container {
-    border: 2px solid var(--border);
-    border-radius: var(--radius-md);
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    background: white;
+    min-height: 400px;*/
 }
+
 #editor-container.focused {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.1);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
-.ql-toolbar {
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    border-radius: var(--radius-md) var(--radius-md) 0 0;
+
+/* CKEditor Toolbar Styling */
+.ck-toolbar {
+    border: none !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    border-radius: 8px 8px 0 0 !important;
+    background: #f9fafb !important;
 }
-.ql-container {
-    border: none;
-    border-radius: 0 0 var(--radius-md) var(--radius-md);
-    height: 89%;
+
+/* CKEditor Content Area */
+.ck-content {
+    border: none !important;
+    border-radius: 0 0 8px 8px !important;
+    min-height: 350px !important;
+    padding: 20px !important;
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    color: #374151 !important;
+    background: white !important;
+    height: 100px;
 }
-.ql-editor {
-    min-height: 300px;
-    font-size: 1rem;
-    line-height: 1.6;
+
+/* Fix text visibility issues */
+.ck-content p {
+    color: #374151 !important;
+    margin: 0 0 1em 0 !important;
 }
-.ql-container.ql-snow {
-    border: 0px solid #ccc;
+
+.ck-content h1, .ck-content h2, .ck-content h3, 
+.ck-content h4, .ck-content h5, .ck-content h6 {
+    color: #1f2937 !important;
+    font-weight: bold !important;
+}
+
+.ck-content ul, .ck-content ol {
+    color: #374151 !important;
+    padding-left: 2em !important;
+}
+
+.ck-content blockquote {
+    color: #6b7280 !important;
+    border-left: 4px solid #e5e7eb !important;
+    padding-left: 1em !important;
+    margin: 1em 0 !important;
+    font-style: italic !important;
+}
+
+/* Placeholder styling */
+.ck-placeholder {
+    color: #9ca3af !important;
+    font-style: italic !important;
+}
+
+/* Focus outline */
+.ck-focused {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Image styling within editor */
+.ck-content .image {
+    margin: 1em 0 !important;
+}
+
+.ck-content .image img {
+    max-width: 100% !important;
+    height: auto !important;
+    border-radius: 4px !important;
 }
 </style>
 @endpush
 
+
 @push('scripts')
-<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Quill editor
-    var quill = new Quill('#editor', {
-        theme: 'snow',
-        modules: {
-            toolbar: [
-                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                ['bold', 'italic', 'underline', 'strike'],
-                [{ 'color': [] }, { 'background': [] }],
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                [{ 'indent': '-1'}, { 'indent': '+1' }],
-                [{ 'align': [] }],
-                ['blockquote', 'code-block'],
-                ['link', 'image'],
-                ['clean']
-            ]
-        },
-        placeholder: 'Write your blog content here...'
-    });
-
-    // Focus styling
-    quill.on('selection-change', function(range) {
-        const container = document.getElementById('editor-container');
-        if (range) {
-            container.classList.add('focused');
-        } else {
-            container.classList.remove('focused');
+    let editor;
+    
+    const descriptionTextarea = document.getElementById('description');
+    const initialContent = descriptionTextarea.value || '';
+    
+    // Custom upload adapter
+    class MyUploadAdapter {
+        constructor(loader) {
+            this.loader = loader;
         }
-    });
 
-    // Update hidden textarea when form is submitted
-    const form = document.getElementById('blog-form'); // Use your form's ID
-    form.addEventListener('submit', function() {
-        const description = document.getElementById('description');
-        description.value = quill.root.innerHTML;
-    });
+        upload() {
+            return this.loader.file
+                .then(file => new Promise((resolve, reject) => {
+                    const data = new FormData();
+                    data.append('upload', file);
+                    data.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
 
-    // Set initial content
-    const description = document.getElementById('description');
-    if (description.value) {
-        quill.root.innerHTML = description.value;
+                    fetch('/admin/blogs/upload-image', {
+                        method: 'POST',
+                        body: data,
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.success) {
+                            resolve({
+                                default: result.url
+                            });
+                        } else {
+                            reject(result.message || 'Upload failed');
+                        }
+                    })
+                    .catch(error => {
+                        reject('Upload failed: ' + error.message);
+                    });
+                }));
+        }
+
+        abort() {
+            // Handle upload abort
+        }
+    }
+
+    function MyCustomUploadAdapterPlugin(editor) {
+        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+            return new MyUploadAdapter(loader);
+        };
+    }
+
+    // Initialize CKEditor with image upload
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            extraPlugins: [MyCustomUploadAdapterPlugin],
+            toolbar: [
+                'heading',
+                '|',
+                'bold', 'italic', 'underline', 'strikethrough',
+                '|',
+                'fontSize', 'fontColor', 'fontBackgroundColor',
+                '|',
+                'numberedList', 'bulletedList',
+                '|',
+                'outdent', 'indent',
+                '|',
+                'alignment',
+                '|',
+                'blockQuote', 'codeBlock',
+                '|',
+                'link', 'imageUpload', 'insertTable', 'mediaEmbed',
+                '|',
+                'undo', 'redo',
+                '|',
+                'sourceEditing'
+            ],
+            heading: {
+                options: [
+                    { model: 'paragraph', title: 'Paragraph', class: 'ck-heading_paragraph' },
+                    { model: 'heading1', view: 'h1', title: 'Heading 1', class: 'ck-heading_heading1' },
+                    { model: 'heading2', view: 'h2', title: 'Heading 2', class: 'ck-heading_heading2' },
+                    { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' },
+                    { model: 'heading4', view: 'h4', title: 'Heading 4', class: 'ck-heading_heading4' }
+                ]
+            },
+            fontSize: {
+                options: [
+                    'tiny', 'small', 'default', 'big', 'huge'
+                ]
+            },
+            alignment: {
+                options: ['left', 'center', 'right', 'justify']
+            },
+            image: {
+                toolbar: [
+                    'imageTextAlternative',
+                    'imageStyle:inline',
+                    'imageStyle:block',
+                    'imageStyle:side',
+                    '|',
+                    'imageStyle:alignLeft',
+                    'imageStyle:alignCenter',
+                    'imageStyle:alignRight'
+                ],
+                styles: [
+                    'full',
+                    'side',
+                    'alignLeft',
+                    'alignCenter',
+                    'alignRight'
+                ]
+            },
+            placeholder: 'Write your blog content here...'
+        })
+        .then(newEditor => {
+            editor = newEditor;
+            
+            // Set initial content
+            if (initialContent) {
+                editor.setData(initialContent);
+            }
+            
+            // Focus styling
+            editor.ui.focusTracker.on('change:isFocused', (evt, name, isFocused) => {
+                const container = document.getElementById('editor-container');
+                if (isFocused) {
+                    container.classList.add('focused');
+                } else {
+                    container.classList.remove('focused');
+                }
+            });
+            
+            // Update hidden textarea on content change
+            editor.model.document.on('change:data', () => {
+                descriptionTextarea.value = editor.getData();
+            });
+            
+            // Set initial textarea value
+            descriptionTextarea.value = editor.getData();
+        })
+        .catch(error => {
+            console.error('Error initializing CKEditor:', error);
+            descriptionTextarea.style.display = 'block';
+            document.getElementById('editor-container').style.display = 'none';
+        });
+
+    // Form submission handler
+    const form = document.querySelector('form');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            if (editor) {
+                descriptionTextarea.value = editor.getData();
+            }
+        });
     }
 });
 </script>

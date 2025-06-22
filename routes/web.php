@@ -70,6 +70,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::post('blogs/{blog}/toggle-home-visibility', [BlogController::class, 'toggleHomeVisibility'])
         ->name('blogs.toggle-home-visibility');
     Route::post('blogs/{blog}/toggle-status', [BlogController::class, 'toggleStatus'])->name('blogs.toggle-status');
+    Route::post('blogs/upload-image', [BlogController::class, 'uploadImage'])->name('admin.upload_image');
     
     // Service Types Management
     Route::resource('service-types', ServiceTypeController::class);

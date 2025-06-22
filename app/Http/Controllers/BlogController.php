@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class BlogController extends Controller
 {
@@ -122,6 +123,20 @@ class BlogController extends Controller
      */
     public function destroy(Request $request, Blog $blog)
     {
+
+        // Extract image URLs from description
+        preg_match_all('/<img[^>]+src="([^">]+)"/i', $blog->description, $matches);
+        $imageUrls = $matches[1] ?? [];
+        foreach ($imageUrls as $url) {
+            // Extract relative file path
+            $path = str_replace(asset('storage') . '/', '', $url);
+
+            // Delete from storage if exists
+            if (Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
+            }
+        }
+
         // Delete blog image if it exists
         if ($blog->image && Storage::disk('public')->exists('blogs/' . $blog->image)) {
             Storage::disk('public')->delete('blogs/' . $blog->image);
@@ -176,5 +191,59 @@ class BlogController extends Controller
         ]);
 
         return response()->json(['success' => true]);
+    }
+
+    public function uploadImage(Request $request)
+    {
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'upload' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048' // 2MB max
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation failed: ' . implode(', ', $validator->errors()->all())
+                ], 422);
+            }
+
+            if ($request->hasFile('upload')) {
+                $file = $request->file('upload');
+                
+                // Generate unique filename
+                $filename = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+                
+                // Store in public/storage/blog-descriptions directory
+                $path = $file->storeAs('blog-descriptions', $filename, 'public');
+                
+                // Generate the full URL
+                $url = asset('storage/' . $path);
+                
+                // Return success response for CKEditor
+                return response()->json([
+                    'success' => true,
+                    'url' => $url,
+                    'filename' => $filename,
+                    'uploaded' => 1 // CKEditor expects this
+                ]);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'No file uploaded'
+            ], 400);
+
+        } catch (\Exception $e) {
+            \Log::error('Image upload error: ' . $e->getMessage());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Upload failed: ' . $e->getMessage(),
+                'error' => [
+                    'message' => $e->getMessage()
+                ]
+            ], 500);
+        }
     }
 }
